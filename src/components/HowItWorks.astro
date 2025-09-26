@@ -4,6 +4,7 @@ import Section from './ui/Section.astro';
 import Grid from './ui/Grid.astro';
 import Card from './ui/Card.astro';
 import Icon from './ui/Icon.astro';
+import Button from './ui/Button.astro';
 
 const steps = [
   {
@@ -11,21 +12,25 @@ const steps = [
     icon: 'play',
     title: 'Responda ao quiz',
     description: 'Um questionário rápido de apenas 1 minuto para identificar o que está interferindo no seu sono.',
-    highlight: '1 minuto'
+    highlight: '1 minuto',
+    hasButton: true,
+    buttonText: 'Começar quiz'
   },
   {
     step: '2',
     icon: 'document-text',
     title: 'Receba seu plano',
     description: 'Um plano personalizado e simples para os próximos 7 dias, baseado no seu perfil.',
-    highlight: '7 dias'
+    highlight: '7 dias',
+    hasButton: false
   },
   {
     step: '3',
     icon: 'chart-bar',
     title: 'Acompanhe o progresso',
     description: 'Use o checklist diário e veja sua evolução através de gráficos e métricas claras.',
-    highlight: 'Evolução'
+    highlight: 'Evolução',
+    hasButton: false
   }
 ];
 ---
@@ -71,6 +76,17 @@ const steps = [
               <div class="inline-flex items-center px-3 py-1 bg-accent-100 text-accent-800 rounded-full text-sm font-medium">
                 {step.highlight}
               </div>
+
+              {step.hasButton && (
+                <a
+                  href="/quiz"
+                  class="btn btn-primary mt-4 w-full"
+                  data-event="durma_cta_click"
+                  data-position="quiz-card"
+                >
+                  {step.buttonText}
+                </a>
+              )}
             </div>
           </Card>
         </div>
@@ -113,10 +129,11 @@ const steps = [
   }
 
   // Track CTA clicks
-  const ctaButton = section?.querySelector('[data-event="durma_cta_click"]');
-  if (ctaButton) {
-    ctaButton.addEventListener('click', () => {
-      trackCTAClick('how-it-works');
+  const ctaButtons = section?.querySelectorAll('[data-event="durma_cta_click"]');
+  ctaButtons?.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      const position = button.getAttribute('data-position');
+      trackCTAClick(position || 'how-it-works');
     });
-  }
+  });
 </script>

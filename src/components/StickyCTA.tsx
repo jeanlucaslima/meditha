@@ -21,7 +21,11 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
       (entries) => {
         entries.forEach((entry) => {
           // Show sticky CTA when hero is not visible
-          setIsVisible(!entry.isIntersecting);
+          const shouldShow = !entry.isIntersecting;
+          setIsVisible(shouldShow);
+
+          // Add/remove padding to body when sticky CTA is shown/hidden
+          document.body.style.paddingBottom = shouldShow ? '120px' : '0';
         });
       },
       {
@@ -34,6 +38,8 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
 
     return () => {
       observer.disconnect();
+      // Clean up padding when component unmounts
+      document.body.style.paddingBottom = '0';
     };
   }, []);
 
