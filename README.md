@@ -27,17 +27,50 @@ cd meditha
 npm install
 ```
 
-### 2. Environment Setup
-Copy `.env.example` to `.env.local` and configure:
+### 2. Third-Party Service Setup
+
+#### 2.1 Supabase Setup
+1. Go to [supabase.com](https://supabase.com) and create a new project
+2. In your project dashboard → Settings → API:
+   - Copy the **Project URL** (SUPABASE_URL)
+   - Copy the **anon public** key (SUPABASE_ANON_KEY)
+   - Copy the **service_role** key (SUPABASE_SERVICE_ROLE_KEY)
+
+#### 2.2 Stripe Setup
+1. Go to [stripe.com](https://stripe.com) and create an account
+2. In your Stripe Dashboard:
+   - **API Keys** → Copy **Secret key** (STRIPE_SECRET_KEY)
+   - **Products** → Create a product for your course → Copy **Price ID** (STRIPE_PRICE_ID)
+   - **Webhooks** → Create webhook endpoint → Copy **Signing secret** (STRIPE_WEBHOOK_SECRET)
+
+#### 2.3 Email Provider Setup (choose one)
+
+**Option A: Postmark**
+1. Go to [postmarkapp.com](https://postmarkapp.com) and create account
+2. Create a server → Copy **Server Token** (EMAIL_API_KEY)
+3. Set `EMAIL_PROVIDER=postmark`
+
+**Option B: SendGrid**
+1. Go to [sendgrid.com](https://sendgrid.com) and create account
+2. Settings → API Keys → Create API Key (EMAIL_API_KEY)
+3. Set `EMAIL_PROVIDER=sendgrid`
+
+**Option C: AWS SES**
+1. Set up AWS SES in your AWS Console
+2. Get your AWS credentials (EMAIL_API_KEY)
+3. Set `EMAIL_PROVIDER=ses`
+
+### 3. Environment Setup
+Copy `.env.example` to `.env.local` and configure with your keys:
 
 ```bash
-# Supabase Configuration
+# Supabase Configuration (from step 2.1)
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=eyJ... # Public anon key
 SUPABASE_SERVICE_ROLE_KEY=eyJ... # Service role key (server-only!)
 SUPABASE_DB_SCHEMA=public
 
-# Stripe Configuration
+# Stripe Configuration (from step 2.2)
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_PRICE_ID=price_...
 STRIPE_WEBHOOK_SECRET=whsec_...
@@ -45,7 +78,7 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 # Application Configuration  
 APP_ORIGIN=https://metodolux.com.br
 
-# Email Configuration
+# Email Configuration (from step 2.3)
 EMAIL_PROVIDER=postmark
 EMAIL_API_KEY=...
 EMAIL_FROM="Dormir Natural <no-reply@metodolux.com.br>"
@@ -54,23 +87,22 @@ EMAIL_FROM="Dormir Natural <no-reply@metodolux.com.br>"
 APP_SECRET=your-secret-key-here
 ```
 
-### 3. Database Setup
+### 4. Database Setup
 Run the database migrations in your Supabase SQL Editor:
 
 1. Execute `supabase/migrations/001_init.sql` - Creates all tables and indexes
 2. Execute `supabase/migrations/002_policies.sql` - Sets up RLS policies
 
-### 4. Stripe Webhook Setup
-Configure your Stripe webhook endpoint to:
-```
-https://your-domain.com/api/stripe/webhook
-```
+### 5. Stripe Webhook Setup
+In your Stripe Dashboard → Webhooks:
 
-Events to listen for:
-- `checkout.session.completed`
-- `payment_intent.succeeded` (optional)
+1. **Add endpoint**: `https://your-domain.com/api/stripe/webhook`
+2. **Select events**:
+   - `checkout.session.completed` (required)
+   - `payment_intent.succeeded` (optional)
+3. **Copy signing secret** to `STRIPE_WEBHOOK_SECRET`
 
-### 5. Development
+### 6. Development
 ```bash
 npm run dev
 ```
@@ -179,7 +211,33 @@ Quiz sessions support experiment tracking with `variant_key`, `experiment_key`, 
 - See [`SUPABASE_INTEGRATION_REPORT.md`](./SUPABASE_INTEGRATION_REPORT.md) for detailed architecture and deployment guide
 - Check [`AGENTS.md`](./AGENTS.md) for agent-specific commands and preferences
 
-## 📞 Support
+## 🔧 Troubleshooting
+
+### Common Setup Issues
+
+**Supabase Connection Errors**
+- Verify `SUPABASE_URL` matches your project URL exactly
+- Ensure `SUPABASE_SERVICE_ROLE_KEY` is marked as encrypted in Vercel
+- Check that RLS policies are applied by running the migration files
+
+**Stripe Webhook Issues**
+- Webhook endpoint must be publicly accessible (not localhost)
+- Use ngrok for local testing: `ngrok http 4321`
+- Verify webhook signing secret matches Stripe dashboard
+- Check `webhook_events` table for processing errors
+
+**Email Delivery Problems**
+- Verify API keys are correct for your chosen provider
+- Check `email_log` table for delivery status and errors
+- Ensure `EMAIL_FROM` domain is verified with your provider
+- Test with `EMAIL_PROVIDER=mock` for development
+
+**Build/Deploy Issues**
+- Node.js version should be 22 for Vercel compatibility
+- Ensure all environment variables are set in Vercel
+- Check Vercel function logs for runtime errors
+
+### Getting Help
 
 For technical issues:
 1. Check Supabase logs for database errors
