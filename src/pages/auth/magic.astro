@@ -1,0 +1,36 @@
+---
+export const prerender = false;
+import { validateMagicToken, createSessionToken } from '../../lib/auth/magic';
+
+const url = new URL(Astro.request.url);
+const token = url.searchParams.get('token');
+
+if (!token) {
+  return Astro.redirect('/durma/quiz?error=token_missing');
+}
+
+const result = await validateMagicToken(token);
+
+if (!result.valid || !result.user) {
+  let errorCode = 'invalid';
+  if (result.error?.includes('expired')) errorCode = 'expired';
+  if (result.error?.includes('used')) errorCode = 'used';
+  
+  return Astro.redirect(`/durma/quiz?error=${errorCode}`);
+}
+
+// Create session
+const sessionToken = createSessionToken(result.user.id);
+
+// Set session cookie
+Astro.cookies.set('session', sessionToken, {
+  httpOnly: true,
+  secure: import.meta.env.PROD,
+  sameSite: 'strict',
+  maxAge: 7 * 24 * 60 * 60, // 7 days
+  path: '/'
+});
+
+// Redirect to dashboard
+return Astro.redirect('/durma/area');
+---

@@ -1,0 +1,138 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import { validateSession, getUserById } from '../../lib/auth/magic';
+
+// Check if user is authenticated
+const sessionCookie = Astro.cookies.get('session')?.value;
+let user = null;
+
+if (sessionCookie) {
+  const session = validateSession(sessionCookie);
+  if (session.valid && session.userId) {
+    user = await getUserById(session.userId);
+  }
+}
+
+// Redirect to quiz if not authenticated
+if (!user) {
+  return Astro.redirect('/durma/quiz?auth_required=1');
+}
+
+const firstName = user.nome.split(' ')[0];
+---
+
+<Layout title="Minha Área - Desafio 7 Dias">
+  <main class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-6">
+          <div class="flex items-center">
+            <h1 class="text-2xl font-bold text-gray-900">
+              🌙 Dormir Natural
+            </h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="text-gray-600">Olá, {firstName}!</span>
+            <button class="text-red-600 hover:text-red-700">Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Welcome Section -->
+      <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+        <div class="text-center mb-6">
+          <h2 class="text-3xl font-bold text-gray-900 mb-2">
+            Bem-vindo ao Desafio 7 Dias! 🎉
+          </h2>
+          <p class="text-gray-600">
+            Você está a poucos passos de transformar suas noites de sono
+          </p>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="bg-gray-200 rounded-full h-3 mb-4">
+          <div class="bg-blue-600 h-3 rounded-full" style="width: 0%"></div>
+        </div>
+        <p class="text-sm text-gray-600 text-center">Dia 0 de 7</p>
+      </div>
+
+      <!-- Daily Content -->
+      <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <!-- Today's Audio -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">Áudio de Hoje</h3>
+              <p class="text-sm text-gray-600">Dia 1 - Preparação para o Sono</p>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-4">
+            Comece sua jornada com esta meditação guiada de 8 minutos para relaxar profundamente.
+          </p>
+          <button class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+            ▶️ Reproduzir Áudio
+          </button>
+        </div>
+
+        <!-- Daily Checklist -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">Checklist Diário</h3>
+              <p class="text-sm text-gray-600">Acompanhe seu progresso</p>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <label class="flex items-center">
+              <input type="checkbox" class="rounded border-gray-300 text-blue-600 mr-3">
+              <span class="text-gray-700">Ouvi o áudio de hoje</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="rounded border-gray-300 text-blue-600 mr-3">
+              <span class="text-gray-700">Pratiquei a respiração</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="rounded border-gray-300 text-blue-600 mr-3">
+              <span class="text-gray-700">Dormi sem telas 1h antes</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Overview -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Sua Jornada de 7 Dias</h3>
+        <div class="grid grid-cols-7 gap-2">
+          {[1, 2, 3, 4, 5, 6, 7].map(day => (
+            <div 
+              key={day}
+              class={`text-center p-3 rounded-lg ${
+                day === 1 
+                  ? 'bg-blue-100 text-blue-800 font-semibold' 
+                  : 'bg-gray-50 text-gray-500'
+              }`}
+            >
+              <div class="text-sm">Dia</div>
+              <div class="text-lg">{day}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
