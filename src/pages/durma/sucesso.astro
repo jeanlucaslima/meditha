@@ -1,0 +1,152 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Stripe from 'stripe';
+import { maskEmail } from '../../lib/storage/lead';
+
+const url = new URL(Astro.request.url);
+const sid = url.searchParams.get('sid'); // Stripe checkout session ID
+
+let customerEmail = '';
+let maskedEmail = '';
+
+// Fetch session details to show masked email (optional)
+if (sid && sid.startsWith('cs_') && import.meta.env.STRIPE_SECRET_KEY) {
+  try {
+    const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-12-18.acacia'
+    });
+    const session = await stripe.checkout.sessions.retrieve(sid);
+    customerEmail = session.customer_email || session.metadata?.leadEmail || '';
+    maskedEmail = customerEmail ? maskEmail(customerEmail) : '';
+  } catch (error) {
+    console.error('Error fetching checkout session:', error);
+  }
+}
+---
+
+<Layout title="Pagamento Aprovado - Dormir Natural">
+  <main class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+      <!-- Success Icon -->
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      
+      <!-- Title -->
+      <h1 class="text-2xl font-bold text-gray-900 mb-2">
+        Pagamento aprovado! 🎉
+      </h1>
+      
+      <!-- Description -->
+      <p class="text-gray-600 mb-6">
+        Enviamos um e-mail com seu acesso ao <strong>Desafio 7 Dias</strong>.
+        {maskedEmail && (
+          <span class="block text-sm text-gray-500 mt-2">
+            Para: {maskedEmail}
+          </span>
+        )}
+      </p>
+      
+      <!-- Primary Action -->
+      <a 
+        href="mailto:" 
+        class="inline-block w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors mb-4"
+        onclick="window.open('mailto:', '_blank'); return false;"
+      >
+        📧 Abrir meu e-mail
+      </a>
+      
+      <!-- Secondary Action -->
+      <button 
+        id="resend-btn"
+        class="w-full text-blue-600 hover:text-blue-700 font-medium py-2 px-4 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors"
+      >
+        Não recebeu? Reenviar acesso
+      </button>
+      
+      <!-- Loading state (hidden by default) -->
+      <div id="loading" class="hidden">
+        <div class="inline-flex items-center px-4 py-2">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Reenviando...
+        </div>
+      </div>
+      
+      <!-- Success message (hidden by default) -->
+      <div id="success-message" class="hidden bg-green-50 border border-green-200 rounded-lg p-3 text-green-700 text-sm">
+        ✅ E-mail reenviado com sucesso!
+      </div>
+      
+      <!-- Error message (hidden by default) -->
+      <div id="error-message" class="hidden bg-red-50 border border-red-200 rounded-lg p-3 text-red-700 text-sm">
+        ❌ Erro ao reenviar. Tente novamente em alguns minutos.
+      </div>
+      
+      <!-- Footer -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <p class="text-sm text-gray-500">
+          Precisa de ajuda? Entre em contato conosco
+        </p>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script define:vars={{ sid }}>
+  document.getElementById('resend-btn').addEventListener('click', async () => {
+    const button = document.getElementById('resend-btn');
+    const loading = document.getElementById('loading');
+    const success = document.getElementById('success-message');
+    const error = document.getElementById('error-message');
+    
+    // Hide previous messages
+    success.classList.add('hidden');
+    error.classList.add('hidden');
+    
+    // Show loading state
+    button.classList.add('hidden');
+    loading.classList.remove('hidden');
+    
+    try {
+      const response = await fetch('/api/access/resend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ checkoutSessionId: sid })
+      });
+      
+      const result = await response.json();
+      
+      if (result.ok) {
+        success.classList.remove('hidden');
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          success.classList.add('hidden');
+        }, 5000);
+      } else {
+        throw new Error(result.error || 'Unknown error');
+      }
+      
+    } catch (err) {
+      console.error('Resend error:', err);
+      error.classList.remove('hidden');
+      
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        error.classList.add('hidden');
+      }, 5000);
+    }
+    
+    // Restore button
+    loading.classList.add('hidden');
+    button.classList.remove('hidden');
+  });
+</script>
+</Layout>
