@@ -4,6 +4,9 @@ import { EMAIL_REGEX, MIN_NAME_LENGTH } from '../../lib/quiz/types';
 import fs from 'fs/promises';
 import path from 'path';
 
+// Note: This endpoint requires server adapter for POST requests in production
+// For static builds, the quiz will log leads client-side instead
+
 // Rate limiting storage (in production, use Redis or similar)
 const rateLimitMap = new Map<string, number>();
 const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes

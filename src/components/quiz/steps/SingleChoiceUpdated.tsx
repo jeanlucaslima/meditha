@@ -47,7 +47,12 @@ export default function SingleChoiceUpdated({
           options={options}
           value={value}
           onChange={onChange}
-          onAutoAdvance={onAutoAdvance}
+          onAutoAdvance={() => {
+            // Add small delay to ensure state is updated before advancing
+            setTimeout(() => {
+              onAutoAdvance?.();
+            }, 100);
+          }}
           autoAdvanceDelay={autoAdvanceDelay}
           columns={options.length <= 4 ? 1 : 2}
         />
