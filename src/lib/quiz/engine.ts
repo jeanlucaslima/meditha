@@ -381,9 +381,9 @@ export class QuizEngine {
   /**
    * Get step type for rendering
    */
-  getStepType(step: number): 'presentation' | 'single_choice' | 'multiple_choice' | 'form' | 'loading' {
+  getStepType(step: number): 'presentation' | 'single_choice' | 'multiple_choice' | 'form' | 'loading' | 'offer' {
     switch (step) {
-      case 1: case 3: case 12: case 15: case 18:
+      case 1: case 3: case 12: case 15:
         return 'presentation';
       case 6:
         return 'form';
@@ -391,6 +391,8 @@ export class QuizEngine {
         return 'multiple_choice';
       case 17:
         return 'loading';
+      case 18:
+        return 'offer';
       default:
         return 'single_choice';
     }

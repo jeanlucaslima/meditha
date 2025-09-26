@@ -87,6 +87,11 @@ class QuizStore {
   // Step navigation
   setStep(step: number): void {
     this.setState({ step });
+    
+    // Auto-complete when reaching Step 18 (offer)
+    if (step === 18 && !this.state.completedAt) {
+      this.complete();
+    }
   }
 
   // Answer setters with type safety

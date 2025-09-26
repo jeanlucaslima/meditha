@@ -1,0 +1,112 @@
+---
+// Test page for Step 18 implementation
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test Step 18 - Meditha</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-8 text-center">Test Step 18 Implementation</h1>
+    
+    <div id="quiz-container" class="max-w-4xl mx-auto">
+      <!-- Quiz will be mounted here -->
+    </div>
+    
+    <div class="mt-8 p-4 bg-white rounded-lg shadow">
+      <h2 class="text-lg font-semibold mb-4">Test Controls</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <button 
+          onclick="loadStep18WithBranch('remedios')" 
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Test Heavy Remedios Branch
+        </button>
+        <button 
+          onclick="loadStep18WithBranch('ansiedade')" 
+          class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          Test High Anxiety Branch
+        </button>
+        <button 
+          onclick="loadStep18WithBranch('reassurance')" 
+          class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+        >
+          Test Reassurance Branch
+        </button>
+        <button 
+          onclick="loadStep18WithBranch('experienced')" 
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Test Experienced Branch
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { quizStore } from '/src/lib/quiz/store.js';
+    import OfferStep from '/src/components/quiz/steps/OfferStep.jsx';
+    import { render } from 'preact';
+
+    // Mock different branch scenarios
+    window.loadStep18WithBranch = (branch) => {
+      // Clear existing state
+      quizStore.clearStorage();
+      
+      // Create test state for Step 18
+      const testState = {
+        sessionId: 'test-' + Date.now(),
+        startedAt: Date.now() - 300000, // 5 minutes ago
+        completedAt: Date.now(),
+        step: 18,
+        nome: 'João Silva',
+        email: 'joao@exemplo.com',
+        consent: true,
+        idade: '29-38',
+        diagnostico: 'demoro',
+        horas: '5-6',
+        remedios: branch === 'remedios' ? 'frequente' : 'nunca',
+        ansiedade: branch === 'ansiedade' ? 'sempre' : 'raramente',
+        impactos: ['concentracao', 'energia', 'humor'],
+        consequencias: ['saude_mental', 'performance'],
+        desejos: ['adormecer_rapido', 'sono_profundo', 'acordar_disposto'],
+        conhecimento: branch === 'experienced' ? 'tentei' : 'pouco',
+        direcionamento: 'rapido_sem_remedio',
+        micro: branch === 'reassurance' ? 'medo_falhar' : 'decidido',
+        flags: {
+          branch_no_problems: false,
+          branch_heavy_remedios: branch === 'remedios',
+          branch_high_ansiedade: branch === 'ansiedade',
+          experienced: branch === 'experienced',
+          reassurance: branch === 'reassurance'
+        }
+      };
+
+      // Update store
+      quizStore.setState(testState);
+
+      // Render the OfferStep component
+      const container = document.getElementById('quiz-container');
+      render(
+        OfferStep({
+          state: testState,
+          onNext: () => console.log('Offer next clicked'),
+          onError: (error) => console.error('Offer error:', error)
+        }),
+        container
+      );
+    };
+
+    // Load default test on page load
+    setTimeout(() => {
+      loadStep18WithBranch('remedios');
+    }, 500);
+  </script>
+</body>
+</html>

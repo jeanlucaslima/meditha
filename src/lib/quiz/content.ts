@@ -197,7 +197,7 @@ export const QUIZ_STEPS: Record<number, QuizStep> = {
 
   18: {
     id: 18,
-    type: 'presentation',
+    type: 'offer',
     title: '{{nome}}, seu plano personalizado para dormir naturalmente está pronto!',
     content: 'Descubra o método que já ajudou mais de 1.000 pessoas a voltarem a dormir naturalmente.',
   },

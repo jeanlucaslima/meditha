@@ -54,7 +54,7 @@ export interface QuizState {
 
 export interface QuizStep {
   id: number;
-  type: 'presentation' | 'single_choice' | 'multiple_choice' | 'form' | 'loading';
+  type: 'presentation' | 'single_choice' | 'multiple_choice' | 'form' | 'loading' | 'offer';
   title: string;
   content?: string;
   question?: string;

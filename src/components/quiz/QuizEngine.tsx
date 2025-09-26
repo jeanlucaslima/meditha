@@ -12,6 +12,7 @@ import SingleChoiceUpdated from './steps/SingleChoiceUpdated';
 import MultipleChoiceUpdated from './steps/MultipleChoiceUpdated';
 import LeadFormUpdated from './steps/LeadFormUpdated';
 import LoadingUpdated from './steps/LoadingUpdated';
+import OfferStep from './steps/OfferStep';
 import BeforeAfterGraph from './BeforeAfterGraph';
 
 interface QuizEngineProps {
@@ -203,54 +204,12 @@ export default function QuizEngine({ onComplete, onLeadCapture }: QuizEngineProp
 
     switch (stepType) {
       case 'presentation':
-        if (state.step === 18) {
-          // Final offer step
-          return (
-            <div>
-              <Presentation
-                title={stepContent.title}
-                content={stepContent.content}
-                showCTA={false}
-              />
-              <BeforeAfterGraph showAnimation={true} />
-              <div className="offer-details">
-                <div className="offer-price">
-                  <div className="offer-price-main">{OFFER_DETAILS.price}</div>
-                  <div className="offer-price-original">{OFFER_DETAILS.originalPrice}</div>
-                  <div className="offer-discount">{OFFER_DETAILS.discount}</div>
-                </div>
-                <div className="offer-deliverables">
-                  {OFFER_DETAILS.deliverables.map((item, index) => (
-                    <div key={index} className="offer-item">{item}</div>
-                  ))}
-                </div>
-                <div className="offer-bonus">
-                  {OFFER_DETAILS.bonus.map((item, index) => (
-                    <div key={index} className="offer-bonus-item">{item}</div>
-                  ))}
-                </div>
-                <div className="offer-guarantee">{OFFER_DETAILS.guarantee}</div>
-                <button
-                  className="offer-cta"
-                  data-event="offer_click"
-                  onClick={() => {
-                    track('offer_click');
-                    // Handle checkout redirect
-                  }}
-                >
-                  {CTA_TEXTS.final}
-                </button>
-              </div>
-            </div>
-          );
-        } else {
-          return (
-            <Presentation
-              title={stepContent.title}
-              content={stepContent.content}
-            />
-          );
-        }
+        return (
+          <Presentation
+            title={stepContent.title}
+            content={stepContent.content}
+          />
+        );
 
       case 'single_choice':
         return (
@@ -299,6 +258,20 @@ export default function QuizEngine({ onComplete, onLeadCapture }: QuizEngineProp
             content={stepContent.content}
             onComplete={handleNext}
             duration={2000}
+          />
+        );
+
+      case 'offer':
+        return (
+          <OfferStep
+            state={state}
+            onNext={() => {
+              // The OfferStep handles its own navigation to checkout
+              // No need to advance step here
+            }}
+            onError={(error) => {
+              setValidationError(error);
+            }}
           />
         );
 
