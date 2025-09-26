@@ -46,7 +46,7 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
     trackQuizStart();
 
     // Add UTM parameters
-    const url = new URL('/quiz', window.location.origin);
+    const url = new URL('/durma/quiz', window.location.origin);
     url.searchParams.set('utm_source', 'durma_landing');
     url.searchParams.set('utm_medium', 'sticky_cta');
     url.searchParams.set('utm_campaign', 'lux_method');

@@ -138,13 +138,13 @@ const schema = {
 
   // Add UTM parameters to all quiz links
   document.addEventListener('DOMContentLoaded', () => {
-    const quizLinks = document.querySelectorAll('a[href="/quiz"]');
+    const quizLinks = document.querySelectorAll('a[href="/quiz"], a[href*="quiz"]');
 
     quizLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
 
-        const url = new URL('/quiz', window.location.origin);
+        const url = new URL('/durma/quiz', window.location.origin);
         url.searchParams.set('utm_source', 'durma_landing');
         url.searchParams.set('utm_medium', 'cta_click');
         url.searchParams.set('utm_campaign', 'lux_method');
