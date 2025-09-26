@@ -1,0 +1,154 @@
+---
+import Container from './ui/Container.astro';
+import Section from './ui/Section.astro';
+import Grid from './ui/Grid.astro';
+import Card from './ui/Card.astro';
+import Icon from './ui/Icon.astro';
+import Badge from './ui/Badge.astro';
+
+const deliverables = [
+  {
+    icon: 'document-text',
+    title: 'Diário do Sono – Método Lux',
+    description: 'Um diário estruturado para acompanhar seus padrões de sono e identificar o que funciona melhor para você.',
+    features: [
+      'Registro diário de qualidade do sono',
+      'Identificação de padrões',
+      'Dicas personalizadas'
+    ],
+    badge: 'Digital'
+  },
+  {
+    icon: 'check-circle',
+    title: 'Kit Sono Express',
+    description: 'Checklist diário com ações práticas para implementar imediatamente na sua rotina.',
+    features: [
+      'Lista de verificação matinal',
+      'Rotina noturna otimizada',
+      'Lembretes inteligentes'
+    ],
+    badge: 'Imediato'
+  },
+  {
+    icon: 'chart-bar',
+    title: 'Lux Score',
+    description: 'Sistema de pontuação e gráficos de evolução para visualizar seu progresso ao longo dos 7 dias.',
+    features: [
+      'Pontuação diária de qualidade',
+      'Gráficos de evolução',
+      'Relatório de progresso'
+    ],
+    badge: 'Exclusivo'
+  }
+];
+---
+
+<Section bg="base" id="deliverables">
+  <Container>
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Seu kit para 7 dias de transformação.
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        Tudo que você precisa para implementar o método e acompanhar seus resultados.
+      </p>
+    </div>
+
+    <Grid cols={3} gap="xl">
+      {deliverables.map((item, index) => (
+        <Card hover class="h-full relative overflow-visible">
+          <!-- Badge -->
+          <div class="absolute -top-3 left-6 z-10">
+            <Badge variant="accent" class="font-semibold">
+              {item.badge}
+            </Badge>
+          </div>
+
+          <div class="pt-6">
+            <div class="flex flex-col items-center space-y-6 text-center">
+              <!-- Icon -->
+              <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
+                <Icon name={item.icon} size="lg" class="text-primary-600" />
+              </div>
+
+              <!-- Title -->
+              <h3 class="text-xl font-bold text-base-content">
+                {item.title}
+              </h3>
+
+              <!-- Description -->
+              <p class="text-base-content/70 leading-relaxed">
+                {item.description}
+              </p>
+
+              <!-- Features list -->
+              <ul class="space-y-2 self-stretch">
+                {item.features.map((feature) => (
+                  <li class="flex items-start space-x-2">
+                    <Icon name="check-circle" size="sm" class="text-accent mt-0.5 flex-shrink-0" />
+                    <span class="text-sm text-base-content/80">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </Grid>
+
+    <!-- Value proposition -->
+    <div class="mt-16 text-center bg-white rounded-2xl p-8 shadow-lg border border-base-300">
+      <div class="max-w-3xl mx-auto">
+        <h3 class="text-2xl font-bold text-base-content mb-4">
+          Tudo isso por apenas o tempo de um teste de 1 minuto
+        </h3>
+        <p class="text-lg text-base-content/70 mb-6">
+          Sem custos ocultos, sem assinaturas. Apenas um questionário rápido para receber seu plano personalizado.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/quiz"
+            class="btn btn-primary btn-lg w-full sm:w-auto"
+            data-event="durma_cta_click"
+            data-position="deliverables"
+          >
+            Começar teste gratuito
+          </a>
+
+          <div class="flex items-center text-base-content/60 text-sm">
+            <Icon name="clock" size="sm" class="mr-2" />
+            Apenas 1 minuto
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView, trackCTAClick } from '../lib/analytics';
+
+  // Track section view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('deliverables');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('deliverables');
+  if (section) {
+    observer.observe(section);
+  }
+
+  // Track CTA clicks
+  const ctaButton = section?.querySelector('[data-event="durma_cta_click"]');
+  if (ctaButton) {
+    ctaButton.addEventListener('click', () => {
+      trackCTAClick('deliverables');
+    });
+  }
+</script>

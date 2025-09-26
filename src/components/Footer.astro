@@ -1,0 +1,95 @@
+---
+import Container from './ui/Container.astro';
+import FooterBase from './ui/FooterBase.astro';
+import Button from './ui/Button.astro';
+
+const currentYear = new Date().getFullYear();
+
+const links = [
+  { text: 'Política de Privacidade', href: '/privacy' },
+  { text: 'Termos de Uso', href: '/terms' },
+  { text: 'Contato', href: 'mailto:contato@metodolux.com.br' }
+];
+---
+
+<FooterBase>
+  <Container>
+    <div class="space-y-12">
+      <!-- Final CTA -->
+      <div class="text-center py-12 border-b border-white/10">
+        <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
+          Pronto para dormir melhor?
+        </h3>
+        <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+          Comece sua jornada para noites melhores com nosso teste gratuito de 1 minuto.
+        </p>
+        <Button
+          href="/quiz"
+          variant="secondary"
+          size="lg"
+          data-event="durma_cta_click"
+          data-position="footer"
+        >
+          Começar teste
+        </Button>
+      </div>
+
+      <!-- Footer content -->
+      <div class="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+        <!-- Brand -->
+        <div class="text-center md:text-left">
+          <div class="text-xl font-bold text-white mb-2">
+            Método Lux
+          </div>
+          <div class="text-white/60 text-sm">
+            Dormir Natural
+          </div>
+        </div>
+
+        <!-- Links -->
+        <nav class="flex flex-wrap justify-center md:justify-end gap-6">
+          {links.map((link) => (
+            <a
+              href={link.href}
+              class="text-white/80 hover:text-white text-sm transition-colors"
+            >
+              {link.text}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="pt-8 border-t border-white/10">
+        <div class="bg-white/5 rounded-lg p-6">
+          <p class="text-white/70 text-sm leading-relaxed">
+            <strong class="text-white">Disclaimer:</strong>
+            Este conteúdo é educativo e não substitui aconselhamento médico.
+            Se você possui condições médicas relacionadas ao sono, procure orientação profissional.
+            O Método Lux oferece técnicas naturais para melhoria da qualidade do sono baseadas em
+            hábitos saudáveis e higiene do sono.
+          </p>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="text-center pt-6 border-t border-white/10">
+        <p class="text-white/60 text-sm">
+          © {currentYear} Método Lux. Todos os direitos reservados.
+        </p>
+      </div>
+    </div>
+  </Container>
+</FooterBase>
+
+<script>
+  import { trackCTAClick } from '../lib/analytics';
+
+  // Track footer CTA clicks
+  const ctaButton = document.querySelector('[data-event="durma_cta_click"][data-position="footer"]');
+  if (ctaButton) {
+    ctaButton.addEventListener('click', () => {
+      trackCTAClick('footer');
+    });
+  }
+</script>

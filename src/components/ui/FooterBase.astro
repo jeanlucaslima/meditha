@@ -1,0 +1,15 @@
+---
+export interface Props {
+  class?: string;
+}
+
+const {
+  class: className = ''
+} = Astro.props;
+---
+
+<footer class={`bg-primary text-white ${className}`}>
+  <div class="container-responsive section-padding">
+    <slot />
+  </div>
+</footer>

@@ -1,0 +1,33 @@
+---
+export interface Props {
+  class?: string;
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | 'full';
+  padding?: boolean;
+}
+
+const {
+  class: className = '',
+  maxWidth = '7xl',
+  padding = true
+} = Astro.props;
+
+const maxWidthClasses = {
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
+  '2xl': 'max-w-2xl',
+  '3xl': 'max-w-3xl',
+  '4xl': 'max-w-4xl',
+  '5xl': 'max-w-5xl',
+  '6xl': 'max-w-6xl',
+  '7xl': 'max-w-7xl',
+  full: 'max-w-full'
+};
+
+const paddingClass = padding ? 'px-4 sm:px-6 lg:px-8' : '';
+---
+
+<div class={`${maxWidthClasses[maxWidth]} mx-auto ${paddingClass} ${className}`}>
+  <slot />
+</div>

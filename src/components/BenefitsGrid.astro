@@ -1,0 +1,80 @@
+---
+import Container from './ui/Container.astro';
+import Section from './ui/Section.astro';
+import Grid from './ui/Grid.astro';
+import Card from './ui/Card.astro';
+import Icon from './ui/Icon.astro';
+
+const benefits = [
+  {
+    icon: 'moon',
+    title: 'Sono Natural',
+    description: 'Durma profundamente sem dependência de medicamentos ou suplementos artificiais.'
+  },
+  {
+    icon: 'heart',
+    title: 'Energia Real',
+    description: 'Acorde revigorado e com disposição para enfrentar o dia com vitalidade.'
+  },
+  {
+    icon: 'clock',
+    title: 'Rotina Simples',
+    description: 'Métodos práticos que se encaixam naturalmente na sua vida cotidiana.'
+  },
+  {
+    icon: 'check-circle',
+    title: 'Resultados Rápidos',
+    description: 'Melhora perceptível já nos primeiros dias de aplicação do método.'
+  }
+];
+---
+
+<Section bg="white" id="benefits">
+  <Container>
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Sono natural, energia real.
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        Descubra os benefícios de dormir bem sem depender de medicamentos ou truques complicados.
+      </p>
+    </div>
+
+    <Grid cols={4} gap="lg">
+      {benefits.map((benefit) => (
+        <Card hover class="text-center h-full">
+          <div class="flex flex-col items-center space-y-4">
+            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <Icon name={benefit.icon} size="lg" class="text-primary-600" />
+            </div>
+            <h3 class="text-xl font-semibold text-base-content">
+              {benefit.title}
+            </h3>
+            <p class="text-base-content/70 leading-relaxed">
+              {benefit.description}
+            </p>
+          </div>
+        </Card>
+      ))}
+    </Grid>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  // Track benefits section view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('benefits');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const benefitsSection = document.getElementById('benefits');
+  if (benefitsSection) {
+    observer.observe(benefitsSection);
+  }
+</script>

@@ -1,0 +1,32 @@
+---
+export interface Props {
+  class?: string;
+  bg?: 'base' | 'white' | 'primary' | 'secondary' | 'accent';
+  padding?: boolean;
+  id?: string;
+}
+
+const {
+  class: className = '',
+  bg = 'base',
+  padding = true,
+  id
+} = Astro.props;
+
+const bgClasses = {
+  base: 'bg-base-100',
+  white: 'bg-white',
+  primary: 'bg-primary text-white',
+  secondary: 'bg-secondary text-white',
+  accent: 'bg-accent text-white'
+};
+
+const paddingClass = padding ? 'section-padding' : '';
+---
+
+<section
+  class={`${bgClasses[bg]} ${paddingClass} ${className}`}
+  {id}
+>
+  <slot />
+</section>

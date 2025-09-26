@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+
+const title = 'Termos de Uso';
+const description = 'Termos de uso do Método Lux - Condições para uso dos nossos serviços e conteúdo.';
+---
+
+<BaseLayout title={title} description={description} noIndex={true}>
+  <Section bg="white" class="min-h-screen">
+    <Container maxWidth="4xl">
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-4xl font-bold text-base-content mb-8">
+          Termos de Uso
+        </h1>
+
+        <p class="text-base-content/70 mb-8">
+          <strong>Última atualização:</strong> {new Date().toLocaleDateString('pt-BR')}
+        </p>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            1. Aceitação dos Termos
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Ao acessar e usar o site do Método Lux, você concorda em cumprir estes termos de uso e todas as leis e regulamentos aplicáveis. Se você não concordar com algum destes termos, está proibido de usar ou acessar este site.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            2. Natureza Educativa do Conteúdo
+          </h2>
+          <p class="text-base-content/80 leading-relaxed mb-4">
+            O Método Lux oferece conteúdo educativo sobre melhoria da qualidade do sono através de hábitos naturais. <strong>Importante:</strong>
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80">
+            <li>Nosso conteúdo não substitui aconselhamento médico profissional</li>
+            <li>Não diagnosticamos, tratamos ou curamos condições médicas</li>
+            <li>Sempre consulte um profissional de saúde para questões médicas</li>
+            <li>Se você tem distúrbios do sono diagnosticados, procure orientação médica</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            3. Uso Permitido
+          </h2>
+          <p class="text-base-content/80 leading-relaxed mb-4">
+            Você pode:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80">
+            <li>Usar nosso conteúdo para fins pessoais e educativos</li>
+            <li>Compartilhar nosso conteúdo com atribuição adequada</li>
+            <li>Participar de nossos questionários e programas</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            4. Uso Proibido
+          </h2>
+          <p class="text-base-content/80 leading-relaxed mb-4">
+            É proibido:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80">
+            <li>Reproduzir ou distribuir nosso conteúdo para fins comerciais sem autorização</li>
+            <li>Usar o site para atividades ilegais ou prejudiciais</li>
+            <li>Tentar acessar áreas restritas do site</li>
+            <li>Interferir com o funcionamento do site</li>
+            <li>Fornecer informações falsas ou enganosas</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            5. Propriedade Intelectual
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Todo o conteúdo do site, incluindo textos, imagens, logos e metodologias, são propriedade do Método Lux e estão protegidos por leis de direitos autorais. O uso não autorizado pode resultar em ação legal.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            6. Limitação de Responsabilidade
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            O Método Lux não se responsabiliza por:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80 mt-4">
+            <li>Resultados específicos ou garantidos</li>
+            <li>Danos diretos ou indiretos pelo uso do conteúdo</li>
+            <li>Problemas técnicos ou interrupções do serviço</li>
+            <li>Conteúdo de terceiros ou links externos</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            7. Modificações
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Reservamos o direito de:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80 mt-4">
+            <li>Modificar estes termos a qualquer momento</li>
+            <li>Alterar ou descontinuar serviços</li>
+            <li>Suspender acesso por violação dos termos</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            8. Lei Aplicável
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Estes termos são regidos pelas leis brasileiras. Qualquer disputa será resolvida nos tribunais competentes do Brasil.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            9. Contato
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Para questões sobre estes termos:
+          </p>
+          <p class="text-base-content/80 mt-4">
+            <strong>Email:</strong> <a href="mailto:legal@metodolux.com.br" class="text-primary hover:text-primary-600 underline">legal@metodolux.com.br</a>
+          </p>
+        </section>
+
+        <div class="mt-12 p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <h3 class="text-lg font-semibold text-yellow-800 mb-2">
+            ⚠️ Aviso Importante sobre Saúde
+          </h3>
+          <p class="text-yellow-700 text-sm leading-relaxed">
+            O Método Lux oferece técnicas naturais para melhoria da qualidade do sono baseadas em hábitos saudáveis e higiene do sono. Nosso conteúdo é educativo e não substitui diagnóstico, tratamento ou aconselhamento médico profissional. Se você tem distúrbios do sono, insônia crônica, apneia do sono ou outras condições médicas, consulte sempre um profissional de saúde qualificado.
+          </p>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

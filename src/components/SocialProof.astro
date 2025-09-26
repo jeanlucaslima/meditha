@@ -1,0 +1,166 @@
+---
+import Container from './ui/Container.astro';
+import Section from './ui/Section.astro';
+import Grid from './ui/Grid.astro';
+import Card from './ui/Card.astro';
+import Icon from './ui/Icon.astro';
+import Badge from './ui/Badge.astro';
+
+const testimonials = [
+  {
+    name: 'Maria Silva',
+    location: 'São Paulo, SP',
+    testimonial: 'Finalmente consegui dormir sem acordar várias vezes durante a noite. O método é simples e realmente funciona!',
+    rating: 5,
+    isSimulated: true
+  },
+  {
+    name: 'João Santos',
+    location: 'Rio de Janeiro, RJ',
+    testimonial: 'Estava cético, mas em 5 dias já sentia diferença. Acordo mais disposto e não preciso mais daquela soneca da tarde.',
+    rating: 5,
+    isSimulated: true
+  }
+];
+
+const trustStats = [
+  {
+    number: '+5.000',
+    label: 'pessoas já aplicaram',
+    sublabel: 'nosso checklist'
+  },
+  {
+    number: '87%',
+    label: 'relatam melhora',
+    sublabel: 'nos primeiros 7 dias'
+  },
+  {
+    number: '4.8/5',
+    label: 'avaliação média',
+    sublabel: 'dos usuários'
+  }
+];
+---
+
+<Section bg="white" id="social-proof">
+  <Container>
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Resultados que dão confiança.
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        Milhares de pessoas já transformaram suas noites com o Método Lux.
+      </p>
+    </div>
+
+    <!-- Trust stats -->
+    <div class="mb-16">
+      <Grid cols={3} gap="lg">
+        {trustStats.map((stat) => (
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-2">
+              {stat.number}
+            </div>
+            <div class="text-base font-medium text-base-content">
+              {stat.label}
+            </div>
+            <div class="text-sm text-base-content/60">
+              {stat.sublabel}
+            </div>
+          </div>
+        ))}
+      </Grid>
+    </div>
+
+    <!-- Main trust badge -->
+    <div class="text-center mb-16">
+      <Badge variant="primary" size="lg" class="text-lg px-6 py-3">
+        +5.000 pessoas já aplicaram nosso checklist
+      </Badge>
+    </div>
+
+    <!-- Testimonials -->
+    <Grid cols={2} gap="lg" class="max-w-4xl mx-auto">
+      {testimonials.map((testimonial) => (
+        <Card class="h-full">
+          <div class="flex flex-col h-full">
+            <!-- Rating stars -->
+            <div class="flex items-center mb-4">
+              {Array.from({ length: testimonial.rating }, (_, i) => (
+                <Icon name="star" size="sm" class="text-yellow-400 fill-current" />
+              ))}
+            </div>
+
+            <!-- Testimonial text -->
+            <blockquote class="text-base-content/80 italic mb-6 flex-1">
+              "{testimonial.testimonial}"
+            </blockquote>
+
+            <!-- Author info -->
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-medium text-base-content">
+                  {testimonial.name}
+                </div>
+                <div class="text-sm text-base-content/60">
+                  {testimonial.location}
+                </div>
+              </div>
+
+              {testimonial.isSimulated && (
+                <Badge variant="neutral" size="sm">
+                  Simulado
+                </Badge>
+              )}
+            </div>
+          </div>
+        </Card>
+      ))}
+    </Grid>
+
+    <!-- CTA Section -->
+    <div class="text-center mt-16 p-8 bg-gradient-to-r from-primary-50 to-accent-50 rounded-2xl">
+      <h3 class="text-2xl font-bold text-base-content mb-4">
+        Junte-se às milhares de pessoas que já melhoraram seu sono
+      </h3>
+      <p class="text-base-content/70 mb-6">
+        Comece seu teste gratuito de 1 minuto agora mesmo.
+      </p>
+      <a
+        href="/quiz"
+        class="btn btn-primary btn-lg"
+        data-event="durma_cta_click"
+        data-position="social-proof"
+      >
+        Fazer teste gratuito
+      </a>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView, trackCTAClick } from '../lib/analytics';
+
+  // Track section view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('socialproof');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('social-proof');
+  if (section) {
+    observer.observe(section);
+  }
+
+  // Track CTA clicks
+  const ctaButton = section?.querySelector('[data-event="durma_cta_click"]');
+  if (ctaButton) {
+    ctaButton.addEventListener('click', () => {
+      trackCTAClick('social-proof');
+    });
+  }
+</script>

@@ -1,0 +1,99 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  noIndex?: boolean;
+  canonical?: string;
+  schema?: object;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-default.jpg',
+  noIndex = false,
+  canonical,
+  schema
+} = Astro.props;
+
+const fullTitle = title.includes('|') ? title : `${title} | Método Lux`;
+const canonicalUrl = canonical || Astro.url.href;
+const ogUrl = Astro.site ? new URL(ogImage, Astro.site).href : ogImage;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={fullTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogUrl} />
+
+    <!-- Additional Meta -->
+    <meta name="theme-color" content="#2E5077" />
+    <meta name="author" content="Método Lux" />
+
+    <!-- Schema.org JSON-LD -->
+    {schema && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://connect.facebook.net" />
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/src/styles/global.css" />
+
+    <!-- Critical CSS will be inlined here by build process -->
+  </head>
+  <body class="bg-base-100 text-base-content antialiased">
+    <slot />
+
+    <!-- Scroll depth tracking -->
+    <script>
+      import { trackScrollDepth } from '../lib/analytics';
+
+      let scrollDepthTracked = new Set();
+
+      function handleScroll() {
+        const scrollPercent = Math.round(
+          (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+        );
+
+        [25, 50, 75, 100].forEach(threshold => {
+          if (scrollPercent >= threshold && !scrollDepthTracked.has(threshold)) {
+            scrollDepthTracked.add(threshold);
+            trackScrollDepth(threshold);
+          }
+        });
+      }
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    </script>
+  </body>
+</html>

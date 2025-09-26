@@ -1,0 +1,122 @@
+---
+import Container from './ui/Container.astro';
+import Section from './ui/Section.astro';
+import Grid from './ui/Grid.astro';
+import Card from './ui/Card.astro';
+import Icon from './ui/Icon.astro';
+
+const steps = [
+  {
+    step: '1',
+    icon: 'play',
+    title: 'Responda ao quiz',
+    description: 'Um questionário rápido de apenas 1 minuto para identificar o que está interferindo no seu sono.',
+    highlight: '1 minuto'
+  },
+  {
+    step: '2',
+    icon: 'document-text',
+    title: 'Receba seu plano',
+    description: 'Um plano personalizado e simples para os próximos 7 dias, baseado no seu perfil.',
+    highlight: '7 dias'
+  },
+  {
+    step: '3',
+    icon: 'chart-bar',
+    title: 'Acompanhe o progresso',
+    description: 'Use o checklist diário e veja sua evolução através de gráficos e métricas claras.',
+    highlight: 'Evolução'
+  }
+];
+---
+
+<Section bg="base" id="how-it-works">
+  <Container>
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Um método simples que cabe na vida real.
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        Sem complicações, sem mudanças drásticas. Apenas passos práticos que funcionam.
+      </p>
+    </div>
+
+    <Grid cols={3} gap="xl">
+      {steps.map((step, index) => (
+        <div class="relative">
+          {/* Step connector line */}
+          {index < steps.length - 1 && (
+            <div class="hidden lg:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-primary-300 to-transparent z-0 transform translate-x-4"></div>
+          )}
+
+          <Card class="relative z-10 text-center h-full">
+            <div class="flex flex-col items-center space-y-6">
+              <div class="relative">
+                <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold mb-2">
+                  {step.step}
+                </div>
+                <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                  <Icon name={step.icon} size="sm" class="text-white" />
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-base-content">
+                {step.title}
+              </h3>
+
+              <p class="text-base-content/70 leading-relaxed">
+                {step.description}
+              </p>
+
+              <div class="inline-flex items-center px-3 py-1 bg-accent-100 text-accent-800 rounded-full text-sm font-medium">
+                {step.highlight}
+              </div>
+            </div>
+          </Card>
+        </div>
+      ))}
+    </Grid>
+
+    <!-- CTA Section -->
+    <div class="text-center mt-16">
+      <p class="text-lg text-base-content/80 mb-6">
+        Pronto para começar sua jornada para noites melhores?
+      </p>
+      <a
+        href="/quiz"
+        class="btn btn-primary btn-lg"
+        data-event="durma_cta_click"
+        data-position="how-it-works"
+      >
+        Começar agora
+      </a>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView, trackCTAClick } from '../lib/analytics';
+
+  // Track section view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('howitworks');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('how-it-works');
+  if (section) {
+    observer.observe(section);
+  }
+
+  // Track CTA clicks
+  const ctaButton = section?.querySelector('[data-event="durma_cta_click"]');
+  if (ctaButton) {
+    ctaButton.addEventListener('click', () => {
+      trackCTAClick('how-it-works');
+    });
+  }
+</script>

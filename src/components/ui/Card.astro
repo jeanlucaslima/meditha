@@ -1,0 +1,23 @@
+---
+export interface Props {
+  class?: string;
+  padding?: boolean;
+  hover?: boolean;
+}
+
+const {
+  class: className = '',
+  padding = true,
+  hover = false
+} = Astro.props;
+
+const baseClasses = 'card';
+const hoverClasses = hover ? 'hover:shadow-md hover:-translate-y-1 transition-all duration-200' : '';
+const paddingClasses = padding ? 'card-body' : '';
+---
+
+<div class={`${baseClasses} ${hoverClasses} ${className}`}>
+  <div class={paddingClasses}>
+    <slot />
+  </div>
+</div>

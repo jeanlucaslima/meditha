@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+
+const title = 'Política de Privacidade';
+const description = 'Política de privacidade do Método Lux - Como coletamos, usamos e protegemos seus dados pessoais.';
+---
+
+<BaseLayout title={title} description={description} noIndex={true}>
+  <Section bg="white" class="min-h-screen">
+    <Container maxWidth="4xl">
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-4xl font-bold text-base-content mb-8">
+          Política de Privacidade
+        </h1>
+
+        <p class="text-base-content/70 mb-8">
+          <strong>Última atualização:</strong> {new Date().toLocaleDateString('pt-BR')}
+        </p>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            1. Informações que Coletamos
+          </h2>
+          <p class="text-base-content/80 leading-relaxed mb-4">
+            Coletamos informações que você nos fornece diretamente, como quando você:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80">
+            <li>Responde ao nosso questionário sobre sono</li>
+            <li>Se inscreve para receber nosso conteúdo</li>
+            <li>Entra em contato conosco</li>
+            <li>Navega em nosso site (através de cookies e tecnologias similares)</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            2. Como Usamos suas Informações
+          </h2>
+          <p class="text-base-content/80 leading-relaxed mb-4">
+            Utilizamos as informações coletadas para:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80">
+            <li>Personalizar seu plano de melhoria do sono</li>
+            <li>Enviar conteúdo educativo relevante</li>
+            <li>Melhorar nossos serviços e experiência do usuário</li>
+            <li>Analisar tendências e padrões de uso</li>
+            <li>Cumprir obrigações legais</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            3. Cookies e Tecnologias de Rastreamento
+          </h2>
+          <p class="text-base-content/80 leading-relaxed mb-4">
+            Utilizamos cookies e tecnologias similares para:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80">
+            <li><strong>Cookies essenciais:</strong> Necessários para o funcionamento básico do site</li>
+            <li><strong>Cookies analíticos:</strong> Para entender como você usa nosso site (Google Analytics)</li>
+            <li><strong>Cookies de marketing:</strong> Para personalizar anúncios e medir campanhas (Meta Pixel)</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            4. Compartilhamento de Dados
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Não vendemos suas informações pessoais. Podemos compartilhar dados com:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80 mt-4">
+            <li>Provedores de serviços que nos ajudam a operar nosso negócio</li>
+            <li>Autoridades legais quando exigido por lei</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            5. Seus Direitos
+          </h2>
+          <p class="text-base-content/80 leading-relaxed mb-4">
+            Você tem o direito de:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-base-content/80">
+            <li>Acessar suas informações pessoais</li>
+            <li>Corrigir dados incorretos</li>
+            <li>Solicitar a exclusão de seus dados</li>
+            <li>Revogar consentimento a qualquer momento</li>
+            <li>Portar seus dados para outro serviço</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            6. Segurança dos Dados
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Implementamos medidas técnicas e organizacionais apropriadas para proteger suas informações pessoais contra acesso não autorizado, alteração, divulgação ou destruição.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-base-content mb-4">
+            7. Contato
+          </h2>
+          <p class="text-base-content/80 leading-relaxed">
+            Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato:
+          </p>
+          <p class="text-base-content/80 mt-4">
+            <strong>Email:</strong> <a href="mailto:privacidade@metodolux.com.br" class="text-primary hover:text-primary-600 underline">privacidade@metodolux.com.br</a>
+          </p>
+        </section>
+
+        <div class="mt-12 p-6 bg-base-100 rounded-lg">
+          <p class="text-base-content/70 text-sm">
+            Esta política pode ser atualizada periodicamente. Recomendamos que você a revise regularmente para estar informado sobre como protegemos suas informações.
+          </p>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

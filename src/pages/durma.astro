@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import BenefitsGrid from '../components/BenefitsGrid.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import SocialProof from '../components/SocialProof.astro';
+import Deliverables from '../components/Deliverables.astro';
+import Footer from '../components/Footer.astro';
+import StickyCTA from '../components/StickyCTA.tsx';
+import CookieConsent from '../components/CookieConsent.tsx';
+import { COPY } from '../lib/abFlags';
+
+// Default to variant A for server-side rendering
+// Client-side variant will be determined dynamically
+const variant = 'A' as const;
+const ctaText = COPY.heroCTA[variant];
+
+// SEO Data
+const title = 'Dormir naturalmente em 7 dias | Método Lux';
+const description = 'Descubra hábitos que sabotam seu sono com um teste de 1 minuto e um plano simples de 7 dias — 100% natural, sem melatonina.';
+
+// Schema.org structured data
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://metodolux.com.br/durma',
+      url: 'https://metodolux.com.br/durma',
+      name: title,
+      description: description,
+      inLanguage: 'pt-BR',
+      isPartOf: {
+        '@type': 'WebSite',
+        '@id': 'https://metodolux.com.br',
+        name: 'Método Lux',
+        description: 'Dormir Natural',
+        inLanguage: 'pt-BR'
+      }
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://metodolux.com.br'
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Durma Melhor',
+          item: 'https://metodolux.com.br/durma'
+        }
+      ]
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://metodolux.com.br',
+      name: 'Método Lux',
+      description: 'Método natural para melhorar a qualidade do sono',
+      url: 'https://metodolux.com.br',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://metodolux.com.br/logo.png'
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        email: 'contato@metodolux.com.br'
+      }
+    },
+    {
+      '@type': 'Service',
+      name: 'Método Lux - Dormir Natural',
+      description: 'Programa de 7 dias para melhorar a qualidade do sono naturalmente',
+      provider: {
+        '@type': 'Organization',
+        name: 'Método Lux'
+      },
+      serviceType: 'Sleep Improvement Program',
+      areaServed: 'BR',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Serviços de Melhoria do Sono',
+        itemListElement: [
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Teste de Qualidade do Sono',
+              description: 'Avaliação gratuita de 1 minuto para identificar problemas do sono'
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  schema={schema}
+>
+  <!-- Hero Section -->
+  <Hero variant={variant} />
+
+  <!-- Benefits Section -->
+  <BenefitsGrid />
+
+  <!-- How It Works Section -->
+  <HowItWorks />
+
+  <!-- Social Proof Section -->
+  <SocialProof />
+
+  <!-- Deliverables Section -->
+  <Deliverables />
+
+  <!-- Footer -->
+  <Footer />
+
+  <!-- Interactive Islands -->
+  <StickyCTA client:load ctaText={ctaText} variant={variant} />
+  <CookieConsent client:load />
+</BaseLayout>
+
+<script>
+  import { trackPageView } from '../lib/analytics';
+
+  // Track page view on load
+  document.addEventListener('DOMContentLoaded', () => {
+    trackPageView();
+  });
+
+  // Add UTM parameters to all quiz links
+  document.addEventListener('DOMContentLoaded', () => {
+    const quizLinks = document.querySelectorAll('a[href="/quiz"]');
+
+    quizLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const url = new URL('/quiz', window.location.origin);
+        url.searchParams.set('utm_source', 'durma_landing');
+        url.searchParams.set('utm_medium', 'cta_click');
+        url.searchParams.set('utm_campaign', 'lux_method');
+
+        // Add variant info
+        const variant = localStorage.getItem('ab_variant') || 'A';
+        url.searchParams.set('variant', variant);
+
+        // Add position info if available
+        const position = (e.target as HTMLElement).getAttribute('data-position');
+        if (position) {
+          url.searchParams.set('utm_content', position);
+        }
+
+        window.location.href = url.toString();
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Critical CSS for above-the-fold content */
+  body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* Ensure smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Optimize font rendering */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+</style>
