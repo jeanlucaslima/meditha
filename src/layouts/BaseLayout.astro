@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 export interface Props {
   title: string;
   description: string;
@@ -65,9 +67,6 @@ const ogUrl = Astro.site ? new URL(ogImage, Astro.site).href : ogImage;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="preconnect" href="https://connect.facebook.net" />
-
-    <!-- Global Styles -->
-    <link rel="stylesheet" href="/src/styles/global.css" />
 
     <!-- Critical CSS will be inlined here by build process -->
   </head>
