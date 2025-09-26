@@ -1,0 +1,291 @@
+/* CTAButton Component Styles */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.cta-button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* Variants */
+.cta-button--primary {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.cta-button--primary:hover:not(.cta-button--disabled) {
+  background: var(--color-primary-600);
+  border-color: var(--color-primary-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+.cta-button--secondary {
+  background: var(--color-secondary);
+  color: white;
+  border-color: var(--color-secondary);
+}
+
+.cta-button--secondary:hover:not(.cta-button--disabled) {
+  background: var(--color-secondary-600);
+  border-color: var(--color-secondary-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-secondary) 30%, transparent);
+}
+
+.cta-button--outline {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.cta-button--outline:hover:not(.cta-button--disabled) {
+  background: var(--color-primary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+.cta-button--danger {
+  background: var(--color-danger);
+  color: white;
+  border-color: var(--color-danger);
+}
+
+.cta-button--danger:hover:not(.cta-button--disabled) {
+  background: var(--color-danger-600);
+  border-color: var(--color-danger-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-danger) 30%, transparent);
+}
+
+/* Sizes */
+.cta-button--sm {
+  min-height: 36px;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.cta-button--md {
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size);
+}
+
+.cta-button--lg {
+  min-height: 56px;
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--font-size-lg);
+}
+
+/* Full width */
+.cta-button--full-width {
+  width: 100%;
+}
+
+/* States */
+.cta-button--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.cta-button--loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+/* Content and spinner */
+.cta-button__content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: opacity var(--transition);
+}
+
+.cta-button__content--loading {
+  opacity: 0.7;
+}
+
+.cta-button__count {
+  font-weight: 700;
+  margin-left: var(--space-1);
+}
+
+.cta-button__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+}
+
+.cta-button__spinner-icon {
+  width: 100%;
+  height: 100%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Active state */
+.cta-button:active:not(.cta-button--disabled) {
+  transform: translateY(0);
+  transition: transform var(--transition-fast);
+}
+
+/* Press effect */
+.cta-button:active:not(.cta-button--disabled):not(.cta-button--loading) {
+  transform: scale(0.98);
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+  .cta-button--md {
+    min-height: var(--touch-target);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .cta-button--lg {
+    min-height: 52px;
+    padding: var(--space-4) var(--space-6);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .cta-button {
+    border-width: 3px;
+  }
+  
+  .cta-button--primary {
+    background: black;
+    color: white;
+    border-color: black;
+  }
+  
+  .cta-button--primary:hover:not(.cta-button--disabled) {
+    background: #333;
+    border-color: #333;
+  }
+  
+  .cta-button--outline {
+    border-color: black;
+    color: black;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cta-button {
+    transition: none;
+  }
+  
+  .cta-button:hover:not(.cta-button--disabled) {
+    transform: none;
+  }
+  
+  .cta-button:active:not(.cta-button--disabled) {
+    transform: none;
+  }
+  
+  .cta-button__spinner-icon {
+    animation: none;
+  }
+  
+  @keyframes spin {
+    from, to {
+      transform: none;
+    }
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .cta-button--outline {
+    background: transparent;
+    border-color: var(--color-primary-400);
+    color: var(--color-primary-400);
+  }
+  
+  .cta-button--outline:hover:not(.cta-button--disabled) {
+    background: var(--color-primary-400);
+    color: var(--color-base-900);
+  }
+}
+
+/* Print styles */
+@media print {
+  .cta-button {
+    background: white !important;
+    color: black !important;
+    border: 2px solid black !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  
+  .cta-button__spinner {
+    display: none;
+  }
+}
+
+/* Safari specific fixes */
+@supports (-webkit-appearance: none) {
+  .cta-button {
+    -webkit-appearance: none;
+  }
+}
+
+/* Focus styles for different input methods */
+.cta-button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.cta-button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* Hover effects only for devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .cta-button:hover:not(.cta-button--disabled):not(.cta-button--loading) {
+    /* Hover styles already defined above */
+  }
+}
+
+/* Touch-specific styles for mobile devices */
+@media (hover: none) and (pointer: coarse) {
+  .cta-button:active:not(.cta-button--disabled):not(.cta-button--loading) {
+    transform: scale(0.95);
+    transition: transform var(--transition-fast);
+  }
+}

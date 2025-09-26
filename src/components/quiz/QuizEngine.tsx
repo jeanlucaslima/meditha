@@ -5,13 +5,13 @@ import { getPersonalizedContent, CTA_TEXTS, OFFER_DETAILS } from '../../lib/quiz
 import { initQuizAnalytics, getQuizAnalytics } from '../../lib/quiz/analytics';
 import type { QuizState } from '../../lib/quiz/types';
 
-// Step Components
+// Step Components  
 import QuizShell from './QuizShell';
 import Presentation from './steps/Presentation';
-import SingleChoice from './steps/SingleChoice';
-import MultipleChoice from './steps/MultipleChoice';
-import LeadForm from './steps/LeadForm';
-import Loading from './steps/Loading';
+import SingleChoiceUpdated from './steps/SingleChoiceUpdated';
+import MultipleChoiceUpdated from './steps/MultipleChoiceUpdated';
+import LeadFormUpdated from './steps/LeadFormUpdated';
+import LoadingUpdated from './steps/LoadingUpdated';
 import BeforeAfterGraph from './BeforeAfterGraph';
 
 interface QuizEngineProps {
@@ -23,6 +23,9 @@ export default function QuizEngine({ onComplete, onLeadCapture }: QuizEngineProp
   const [state, setState] = useState<QuizState>(quizStore.getState());
   const [isLoading, setIsLoading] = useState(false);
   const [validationError, setValidationError] = useState<string>();
+
+  // Debug logging
+  console.log('[QuizEngine] Rendering with state:', { step: state.step, loading: isLoading });
 
   // Subscribe to store changes
   useEffect(() => {
@@ -174,8 +177,11 @@ export default function QuizEngine({ onComplete, onLeadCapture }: QuizEngineProp
 
   // Render current step
   const renderStep = () => {
-    const stepContent = getPersonalizedContent(state.step, state);
-    const stepType = quizEngine.getStepType(state.step);
+    try {
+      const stepContent = getPersonalizedContent(state.step, state);
+      const stepType = quizEngine.getStepType(state.step);
+      
+      console.log('[QuizEngine] Rendering step:', state.step, 'type:', stepType, 'content:', stepContent);
 
     switch (stepType) {
       case 'presentation':
@@ -230,7 +236,7 @@ export default function QuizEngine({ onComplete, onLeadCapture }: QuizEngineProp
 
       case 'single_choice':
         return (
-          <SingleChoice
+          <SingleChoiceUpdated
             title={stepContent.title}
             options={stepContent.options || []}
             value={getStateValue(state.step)}
@@ -241,32 +247,36 @@ export default function QuizEngine({ onComplete, onLeadCapture }: QuizEngineProp
 
       case 'multiple_choice':
         return (
-          <MultipleChoice
+          <MultipleChoiceUpdated
             title={stepContent.title}
             content={stepContent.content}
             options={stepContent.options || []}
             value={getStateValue(state.step)}
             onChange={(values) => handleStepChange(getFieldName(state.step), values)}
+            onContinue={handleNext}
             minSelections={stepContent.validation?.minSelections}
             maxSelections={stepContent.validation?.maxSelections}
+            isValid={canGoNext}
           />
         );
 
       case 'form':
         return (
-          <LeadForm
+          <LeadFormUpdated
             title={stepContent.title}
             content={stepContent.content}
             nome={state.nome}
             email={state.email}
             consent={state.consent}
             onChange={handleLeadChange}
+            onSubmit={handleNext}
+            isSubmitting={isLoading}
           />
         );
 
       case 'loading':
         return (
-          <Loading
+          <LoadingUpdated
             title={stepContent.title}
             content={stepContent.content}
             onComplete={handleNext}
@@ -275,7 +285,12 @@ export default function QuizEngine({ onComplete, onLeadCapture }: QuizEngineProp
         );
 
       default:
-        return <div>Unknown step type</div>;
+        console.error('[QuizEngine] Unknown step type:', stepType, 'for step:', state.step);
+        return <div>Unknown step type: {stepType}</div>;
+    }
+    } catch (error) {
+      console.error('[QuizEngine] Error rendering step:', error);
+      return <div>Error loading quiz step: {error.message}</div>;
     }
   };
 

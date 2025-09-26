@@ -1,0 +1,230 @@
+/* ProgressBarTop Component Styles */
+.progress-bar-top {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: color-mix(in srgb, var(--color-base) 85%, white);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--color-base-200);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.progress-bar-top--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.progress-bar-top__track {
+  flex: 1;
+  height: 8px;
+  background: var(--color-base-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-right: var(--space-4);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar-top__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-top__fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.progress-bar-top__label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.progress-bar-top__percentage {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.progress-bar-top__step {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-base-content);
+  opacity: 0.7;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .progress-bar-top {
+    height: 56px;
+    padding: 0 var(--space-3);
+  }
+
+  .progress-bar-top__track {
+    margin-right: var(--space-3);
+    height: 6px;
+  }
+
+  .progress-bar-top__percentage {
+    font-size: var(--font-size);
+  }
+
+  .progress-bar-top__step {
+    font-size: 10px;
+  }
+}
+
+/* Small mobile screens */
+@media (max-width: 480px) {
+  .progress-bar-top {
+    height: 48px;
+    padding: 0 var(--space-2);
+  }
+
+  .progress-bar-top__track {
+    margin-right: var(--space-2);
+    height: 4px;
+  }
+
+  .progress-bar-top__label {
+    gap: 2px;
+  }
+
+  .progress-bar-top__percentage {
+    font-size: var(--font-size-sm);
+  }
+
+  .progress-bar-top__step {
+    font-size: 9px;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .progress-bar-top {
+    background: white;
+    border-bottom: 2px solid black;
+  }
+  
+  .progress-bar-top__track {
+    background: #e5e5e5;
+    border: 1px solid black;
+  }
+  
+  .progress-bar-top__fill {
+    background: black;
+  }
+  
+  .progress-bar-top__fill::after {
+    display: none;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar-top {
+    transition: none;
+  }
+  
+  .progress-bar-top__fill {
+    transition: none;
+  }
+  
+  .progress-bar-top__fill::after {
+    animation: none;
+  }
+  
+  @keyframes shimmer {
+    0%, 100% {
+      transform: none;
+    }
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .progress-bar-top {
+    background: color-mix(in srgb, var(--color-base) 85%, transparent);
+    border-bottom-color: var(--color-base-300);
+  }
+  
+  .progress-bar-top__track {
+    background: var(--color-base-300);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Print styles */
+@media print {
+  .progress-bar-top {
+    position: static;
+    background: white;
+    border: 1px solid black;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  
+  .progress-bar-top__track {
+    background: #f0f0f0;
+    border: 1px solid black;
+  }
+  
+  .progress-bar-top__fill {
+    background: black;
+  }
+  
+  .progress-bar-top__fill::after {
+    display: none;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+.progress-bar-top:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}

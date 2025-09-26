@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import QuizEngine from '../../components/quiz/QuizEngine.tsx';
+import QuizEngineSimple from '../../components/quiz/QuizEngineSimple.tsx';
+import '../../components/quiz/quiz-styles-updated.css';
 
 // SEO Data
 const title = 'Quiz Durma Naturalmente | Método Lux - Descubra seu perfil de sono';
@@ -77,12 +79,15 @@ const schema = {
 >
   <!-- Quiz Container -->
   <div class="quiz-page">
-    <!-- Quiz Engine (Hydrated Island) -->
+    <!-- Original Quiz Engine -->
     <QuizEngine client:load />
+    
+    <!-- Simple Quiz Engine Test (for debugging if needed) -->
+    <!-- <QuizEngineSimple client:load /> -->
   </div>
 </BaseLayout>
 
-<link rel="stylesheet" href="../../components/quiz/quiz-styles.css">
+
 
 <style>
   /* Quiz Page Styles */

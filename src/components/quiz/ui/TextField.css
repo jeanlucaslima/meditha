@@ -1,0 +1,234 @@
+/* TextField Component Styles */
+.text-field {
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+
+.text-field__label {
+  display: block;
+  font-size: var(--font-size);
+  font-weight: 600;
+  color: var(--color-base-content);
+  margin-bottom: var(--space-2);
+  line-height: 1.4;
+}
+
+.text-field__required {
+  color: var(--color-danger);
+  font-weight: 700;
+  margin-left: var(--space-1);
+}
+
+.text-field__input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.text-field__input {
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size);
+  font-family: inherit;
+  line-height: 1.4;
+  color: var(--color-base-content);
+  background: var(--color-base);
+  border: 2px solid var(--color-base-300);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Tailwind compatibility - Add these classes for better integration */
+.text-field__input.form-input,
+.text-field__input.block,
+.text-field__input.w-full {
+  /* Tailwind form styles compatibility */
+  width: 100%;
+  display: block;
+}
+
+.text-field__input::placeholder {
+  color: var(--color-base-400);
+  opacity: 1;
+}
+
+.text-field__input:hover {
+  border-color: var(--color-secondary);
+}
+
+.text-field__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+.text-field--focused .text-field__input {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+.text-field--error .text-field__input {
+  border-color: var(--color-danger);
+  background: var(--color-danger-50);
+}
+
+.text-field--error .text-field__input:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 15%, transparent);
+}
+
+/* Icons */
+.text-field__icon {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.text-field__icon--success {
+  width: 100%;
+  height: 100%;
+  color: var(--color-success);
+}
+
+.text-field__icon--error {
+  width: 100%;
+  height: 100%;
+  color: var(--color-danger);
+}
+
+/* Helper Text */
+.text-field__helper {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  color: var(--color-base-content);
+  opacity: 0.7;
+}
+
+/* Error Message */
+.text-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.text-field__error-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Input states for icons */
+.text-field__input:valid:not(:placeholder-shown) {
+  padding-right: 48px;
+}
+
+.text-field--error .text-field__input {
+  padding-right: 48px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .text-field {
+    margin-bottom: var(--space-5);
+  }
+
+  .text-field__label {
+    font-size: var(--font-size-sm);
+  }
+
+  .text-field__input {
+    font-size: var(--font-size);
+    padding: var(--space-3);
+  }
+
+  .text-field__helper,
+  .text-field__error {
+    font-size: var(--font-size-xs);
+  }
+
+  .text-field__icon {
+    right: var(--space-3);
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .text-field__input {
+    border-width: 3px;
+  }
+  
+  .text-field__input:focus {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
+  
+  .text-field--error .text-field__input:focus {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-danger) 30%, transparent);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .text-field__input {
+    transition: none;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .text-field--error .text-field__input {
+    background: color-mix(in srgb, var(--color-danger) 10%, var(--color-base));
+  }
+}
+
+/* Autocomplete styles */
+.text-field__input:-webkit-autofill,
+.text-field__input:-webkit-autofill:hover,
+.text-field__input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-base) inset;
+  -webkit-text-fill-color: var(--color-base-content);
+  border-color: var(--color-primary);
+}
+
+/* Print styles */
+@media print {
+  .text-field__input {
+    border: 2px solid black;
+    box-shadow: none;
+    background: white;
+  }
+  
+  .text-field--error .text-field__input {
+    border-color: black;
+    background: #f5f5f5;
+  }
+  
+  .text-field__icon {
+    display: none;
+  }
+}
+
+/* Safari specific fixes */
+@supports (-webkit-appearance: none) {
+  .text-field__input {
+    -webkit-appearance: none;
+  }
+}
