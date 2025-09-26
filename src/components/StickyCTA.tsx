@@ -11,16 +11,14 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
   const [heroElement, setHeroElement] = useState<Element | null>(null);
 
   useEffect(() => {
-    // Find the hero section
-    const hero = document.querySelector('section'); // First section should be hero
-    setHeroElement(hero);
-
-    if (!hero) return;
+    // Find the hero CTA button instead of the entire hero section
+    const heroCTA = document.getElementById('hero-cta');
+    if (!heroCTA) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Show sticky CTA when hero is not visible
+          // Show sticky CTA when hero CTA button is not visible
           const shouldShow = !entry.isIntersecting;
           setIsVisible(shouldShow);
 
@@ -29,12 +27,12 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
         });
       },
       {
-        threshold: 0.1,
-        rootMargin: '-10px 0px'
+        threshold: 0,
+        rootMargin: '0px'
       }
     );
 
-    observer.observe(hero);
+    observer.observe(heroCTA);
 
     return () => {
       observer.disconnect();
@@ -78,7 +76,7 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
 
           <button
             onClick={handleClick}
-            className="btn btn-primary btn-lg w-full sm:w-auto whitespace-nowrap animate-bounce-subtle"
+            className="btn bg-accent hover:bg-accent-600 text-white btn-lg w-full sm:w-auto whitespace-nowrap animate-bounce-subtle shadow-lg hover:shadow-xl transition-all duration-200"
             data-event="durma_cta_click"
             data-position="sticky"
           >
