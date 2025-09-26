@@ -1,6 +1,6 @@
 ---
 export const prerender = false;
-import { validateMagicToken, createSessionToken } from '../../lib/auth/magic';
+import { validateMagicToken, createSessionToken } from '../../lib/auth/supabase';
 
 const url = new URL(Astro.request.url);
 const token = url.searchParams.get('token');

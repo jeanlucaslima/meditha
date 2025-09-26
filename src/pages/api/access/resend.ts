@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 import Stripe from 'stripe';
-import { getLeadBySessionId, maskEmail } from '../../../lib/storage/lead';
-import { createMagicToken } from '../../../lib/auth/magic';
-import { sendEmail, checkEmailRateLimit } from '../../../lib/email/sender';
+import { getLeadBySessionId, maskEmail, getStripeCheckout } from '../../../lib/storage/supabase';
+import { createMagicToken, getUserByEmail } from '../../../lib/auth/supabase';
+import { sendEmail, checkEmailRateLimit } from '../../../lib/email/supabase';
 import { getAccessEmailTemplate } from '../../../lib/email/templates';
 
 // Initialize Stripe (conditional for build-time)
@@ -96,7 +96,8 @@ export const POST: APIRoute = async ({ request }) => {
     }
     
     // Check rate limiting
-    if (!checkEmailRateLimit(email, 3, 60 * 60 * 1000)) { // 3 emails per hour
+    const rateLimitOk = await checkEmailRateLimit(email, 3, 60 * 60 * 1000); // 3 emails per hour
+    if (!rateLimitOk) {
       return new Response(JSON.stringify({
         error: 'Too many resend attempts. Please try again later.'
       }), {
@@ -114,13 +115,23 @@ export const POST: APIRoute = async ({ request }) => {
     // Generate new magic link
     const magicToken = await createMagicToken(email, nome);
     
-    // Send email
+    // Get user for logging
+    const user = await getUserByEmail(email);
+    
+    // Send email with logging
     const emailTemplate = getAccessEmailTemplate(nome, magicToken.url);
     const emailResult = await sendEmail({
       to: email,
       subject: emailTemplate.subject,
       html: emailTemplate.html,
-      text: emailTemplate.text
+      text: emailTemplate.text,
+      template: 'access_email_resend',
+      userId: user?.id,
+      meta: {
+        sessionId,
+        checkoutSessionId,
+        resend: true
+      }
     });
     
     if (!emailResult.success) {

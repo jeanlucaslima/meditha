@@ -1,8 +1,16 @@
 import type { APIRoute } from 'astro';
 import Stripe from 'stripe';
-import { checkIdempotency, markProcessed, getLeadBySessionId, maskEmail } from '../../../lib/storage/lead';
-import { createMagicToken, upsertUser, createEnrollment } from '../../../lib/auth/magic';
-import { sendEmail } from '../../../lib/email/sender';
+import { 
+  checkIdempotency, 
+  getLeadBySessionId, 
+  maskEmail, 
+  storeWebhookEvent, 
+  markWebhookProcessed,
+  storePayment,
+  getStripeCheckout 
+} from '../../../lib/storage/supabase';
+import { createMagicToken, upsertUser, createEnrollment } from '../../../lib/auth/supabase';
+import { sendEmail } from '../../../lib/email/supabase';
 import { getAccessEmailTemplate } from '../../../lib/email/templates';
 
 // Initialize Stripe (conditional for build-time)
@@ -32,7 +40,7 @@ const verifySignature = (body: string, signature: string): Stripe.Event | null =
 // Process checkout completion
 const handleCheckoutCompleted = async (session: Stripe.Checkout.Session): Promise<boolean> => {
   try {
-    const { id: stripeSessionId, customer_email, metadata } = session;
+    const { id: stripeSessionId, customer_email, metadata, amount_total, payment_intent } = session;
     
     if (!metadata) {
       console.error('No metadata found in checkout session:', stripeSessionId);
@@ -51,7 +59,8 @@ const handleCheckoutCompleted = async (session: Stripe.Checkout.Session): Promis
       sessionId,
       variant,
       hasCustomerEmail: !!customer_email,
-      hasLeadEmail: !!leadEmail
+      hasLeadEmail: !!leadEmail,
+      amount: amount_total
     });
     
     // Get lead data from our storage
@@ -72,9 +81,26 @@ const handleCheckoutCompleted = async (session: Stripe.Checkout.Session): Promis
       nome: nome.split(' ')[0] 
     });
     
+    // Store payment record
+    const paymentId = typeof payment_intent === 'string' ? payment_intent : payment_intent?.id || stripeSessionId;
+    const paymentStored = await storePayment(
+      paymentId,
+      stripeSessionId,
+      sessionId,
+      'succeeded',
+      amount_total || 6700,
+      email,
+      'BRL'
+    );
+    
+    if (!paymentStored) {
+      console.error('Failed to store payment record');
+      // Continue anyway since we still need to fulfill
+    }
+    
     // Upsert user and create enrollment
     const user = await upsertUser(email, nome);
-    const enrollmentSuccess = await createEnrollment(user.id, 'Desafio 7 Dias');
+    const enrollmentSuccess = await createEnrollment(user.id, 'desafio_7_dias', sessionId, paymentId);
     
     if (!enrollmentSuccess) {
       console.error('Failed to create enrollment for user:', user.id);
@@ -84,13 +110,21 @@ const handleCheckoutCompleted = async (session: Stripe.Checkout.Session): Promis
     // Generate magic link
     const magicToken = await createMagicToken(email, nome);
     
-    // Send access email
+    // Send access email with logging
     const emailTemplate = getAccessEmailTemplate(nome, magicToken.url);
     const emailResult = await sendEmail({
       to: email,
       subject: emailTemplate.subject,
       html: emailTemplate.html,
-      text: emailTemplate.text
+      text: emailTemplate.text,
+      template: 'access_email',
+      userId: user.id,
+      meta: {
+        sessionId,
+        stripeSessionId,
+        variant,
+        paymentId
+      }
     });
     
     if (!emailResult.success) {
@@ -102,13 +136,14 @@ const handleCheckoutCompleted = async (session: Stripe.Checkout.Session): Promis
       sessionId,
       userId: user.id,
       emailSent: true,
-      messageId: emailResult.messageId
+      messageId: emailResult.messageId,
+      paymentId
     });
     
     // Log success analytics (server-side, no PII)
     console.log('purchase_succeeded', {
       sessionId,
-      amount: 6700,
+      amount: amount_total || 6700,
       currency: 'BRL',
       variant,
       timestamp: Date.now()
@@ -142,10 +177,17 @@ export const POST: APIRoute = async ({ request }) => {
     console.log('Webhook received:', event.type, event.id);
     
     // Check idempotency
-    const idempotencyKey = `webhook:${event.id}`;
-    if (!checkIdempotency(idempotencyKey)) {
+    const alreadyProcessed = !(await checkIdempotency(event.id));
+    if (alreadyProcessed) {
       console.log('Webhook already processed:', event.id);
       return new Response('OK', { status: 200 });
+    }
+    
+    // Store webhook event
+    const eventStored = await storeWebhookEvent(event.id, event.type, event.data);
+    if (!eventStored) {
+      console.error('Failed to store webhook event:', event.id);
+      return new Response('Event storage failed', { status: 500 });
     }
     
     // Handle the event
@@ -172,12 +214,13 @@ export const POST: APIRoute = async ({ request }) => {
     
     if (processed) {
       // Mark as processed for idempotency
-      markProcessed(idempotencyKey);
+      await markWebhookProcessed(event.id);
       
       // Respond quickly to Stripe
       return new Response('OK', { status: 200 });
     } else {
       console.error('Failed to process webhook:', event.id, event.type);
+      await markWebhookProcessed(event.id, 'Processing failed');
       return new Response('Processing failed', { status: 500 });
     }
     

@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import type { LeadPayload } from '../../lib/types/lead';
-import { storeLead } from '../../lib/storage/lead';
+import { storeLead } from '../../lib/storage/supabase';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

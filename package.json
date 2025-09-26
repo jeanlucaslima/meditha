@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@astrojs/preact": "^4.1.1",
+    "@astrojs/vercel": "^8.2.8",
+    "@supabase/supabase-js": "^2.58.0",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.14.0",
     "crypto": "^1.0.1",

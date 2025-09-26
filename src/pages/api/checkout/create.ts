@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import Stripe from 'stripe';
 import type { CheckoutRequest, CheckoutResponse } from '../../../lib/types/lead';
-import { getLeadBySessionId, checkIdempotency, markProcessed } from '../../../lib/storage/lead';
+import { getLeadBySessionId, createCheckoutIntent, storeStripeCheckout } from '../../../lib/storage/supabase';
 
 // Initialize Stripe (conditional for build-time)
 const getStripe = () => {
@@ -54,11 +54,21 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
     
-    // Check idempotency
-    const idempotencyKey = `checkout:${sessionId}`;
-    if (!checkIdempotency(idempotencyKey)) {
+    // Create checkout intent (idempotent per session)
+    const intent = await createCheckoutIntent(sessionId, variant);
+    if (!intent) {
       return new Response(JSON.stringify({
-        error: 'Duplicate request'
+        error: 'Failed to create checkout intent'
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    // If already exists and was processed, return error
+    if (!intent.created) {
+      return new Response(JSON.stringify({
+        error: 'Checkout already initiated for this session'
       }), {
         status: 409,
         headers: { 'Content-Type': 'application/json' }
@@ -112,8 +122,19 @@ export const POST: APIRoute = async ({ request }) => {
       idempotencyKey: `sid:${sessionId}` // Stripe's idempotency
     });
     
-    // Mark as processed
-    markProcessed(idempotencyKey);
+    // Store Stripe checkout session
+    const stored = await storeStripeCheckout(
+      session.id,
+      sessionId,
+      import.meta.env.STRIPE_PRICE_ID,
+      6700, // Amount in cents
+      session.metadata
+    );
+    
+    if (!stored) {
+      console.error('Failed to store Stripe checkout session');
+      // Continue anyway since Stripe session was created
+    }
     
     // Log creation (without PII)
     console.log('Checkout session created:', {
