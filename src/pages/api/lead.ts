@@ -1,200 +1,169 @@
 import type { APIRoute } from 'astro';
-import type { LeadSubmission } from '../../lib/quiz/types';
-import { EMAIL_REGEX, MIN_NAME_LENGTH } from '../../lib/quiz/types';
-import fs from 'fs/promises';
-import path from 'path';
+import type { LeadPayload } from '../../lib/types/lead';
+import { storeLead } from '../../lib/storage/lead';
 
-// Note: This endpoint requires server adapter for POST requests in production
-// For static builds, the quiz will log leads client-side instead
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Rate limiting storage (in production, use Redis or similar)
-const rateLimitMap = new Map<string, number>();
-const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
-// Validation helpers
-function validateEmail(email: string): boolean {
-  return EMAIL_REGEX.test(email);
-}
+const RATE_LIMIT = {
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  maxRequests: 1 // 1 request per session per 5 minutes
+};
 
-function validateName(nome: string): boolean {
-  return nome.trim().length >= MIN_NAME_LENGTH;
-}
-
-function checkRateLimit(sessionId: string): boolean {
+// Simple honeypot check
+const isHoneypot = (body: any): boolean => {
+  // Check for common bot indicators
+  if (body.website || body.url || body.link) {
+    return true;
+  }
+  
+  // Check for suspicious timing (too fast)
   const now = Date.now();
-  const lastSubmission = rateLimitMap.get(sessionId);
+  const completedAt = body.completedAt;
+  const timeDiff = now - completedAt;
+  
+  if (timeDiff < 30000) { // Less than 30 seconds
+    return true;
+  }
+  
+  return false;
+};
 
-  if (lastSubmission && (now - lastSubmission) < RATE_LIMIT_WINDOW) {
+// Rate limiting check
+const checkRateLimit = (sessionId: string): boolean => {
+  const now = Date.now();
+  const key = `lead:${sessionId}`;
+  const record = rateLimitStore.get(key);
+  
+  if (!record || now > record.resetTime) {
+    // Reset or create new record
+    rateLimitStore.set(key, {
+      count: 1,
+      resetTime: now + RATE_LIMIT.windowMs
+    });
+    return true;
+  }
+  
+  if (record.count >= RATE_LIMIT.maxRequests) {
     return false;
   }
-
-  rateLimitMap.set(sessionId, now);
+  
+  record.count++;
   return true;
-}
+};
 
-// Dev storage helper - writes to .data/leads.jsonl
-async function saveLeadToDev(lead: LeadSubmission): Promise<void> {
-  try {
-    const dataDir = path.join(process.cwd(), '.data');
-    await fs.mkdir(dataDir, { recursive: true });
-
-    const filePath = path.join(dataDir, 'leads.jsonl');
-    const leadLine = JSON.stringify({
-      ...lead,
-      savedAt: new Date().toISOString()
-    }) + '\n';
-
-    await fs.appendFile(filePath, leadLine, 'utf-8');
-
-    // Also log to console with clear formatting
-    console.log('🔥 [LEAD CAPTURED]', {
-      sessionId: lead.sessionId,
-      nome: lead.nome,
-      email: lead.email,
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error saving lead to dev storage:', error);
-    throw error;
+// Validation function
+const validatePayload = (body: any): { valid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+  
+  // Required fields
+  if (!body.sessionId || typeof body.sessionId !== 'string') {
+    errors.push('sessionId is required');
   }
-}
-
-// Future: Replace with real provider
-async function saveLead(lead: LeadSubmission): Promise<void> {
-  // In development, save to local file
-  if (import.meta.env.DEV) {
-    return saveLeadToDev(lead);
+  
+  if (!body.nome || typeof body.nome !== 'string' || body.nome.trim().length < 2) {
+    errors.push('nome must be at least 2 characters');
   }
+  
+  if (!body.email || typeof body.email !== 'string' || !EMAIL_REGEX.test(body.email)) {
+    errors.push('valid email is required');
+  }
+  
+  if (body.consent !== true) {
+    errors.push('consent must be true');
+  }
+  
+  if (!body.completedAt || typeof body.completedAt !== 'number') {
+    errors.push('completedAt is required');
+  }
+  
+  // Validate UUID format
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (body.sessionId && !uuidRegex.test(body.sessionId)) {
+    errors.push('sessionId must be valid UUID v4');
+  }
+  
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+};
 
-  // TODO: Implement production provider
-  // Examples:
-  // - Send to CRM (HubSpot, Pipedrive, etc.)
-  // - Save to database (Supabase, PostgreSQL, etc.)
-  // - Send to webhook endpoint
-  // - Queue for processing (Redis, etc.)
-
-  console.log('[PRODUCTION] Lead would be saved:', lead);
-  throw new Error('Production lead storage not implemented yet');
-}
+// Store lead now handled by shared utility function
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     // Parse request body
     const body = await request.json();
-
-    // Extract and validate required fields
-    const {
-      sessionId,
-      nome,
-      email,
-      consent,
-      answers,
-      startedAt,
-      completedAt,
-      source,
-      utmParams,
-      honeypot // Bot detection
-    } = body;
-
-    // Bot detection - reject if honeypot field is filled
-    if (honeypot && honeypot.trim()) {
-      console.warn('[SECURITY] Honeypot triggered for sessionId:', sessionId);
-      return new Response(JSON.stringify({
-        ok: false,
-        error: 'Invalid request'
-      }), {
+    
+    // Honeypot check
+    if (isHoneypot(body)) {
+      return new Response(JSON.stringify({ error: 'Invalid request' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
     }
-
+    
     // Rate limiting
-    if (!checkRateLimit(sessionId)) {
-      return new Response(JSON.stringify({
-        ok: false,
-        error: 'Rate limit exceeded. Please try again in a few minutes.'
-      }), {
+    if (!checkRateLimit(body.sessionId)) {
+      return new Response(JSON.stringify({ error: 'Too many requests' }), {
         status: 429,
         headers: { 'Content-Type': 'application/json' }
       });
     }
-
-    // Validation
-    const errors: string[] = [];
-
-    if (!sessionId || typeof sessionId !== 'string') {
-      errors.push('Session ID is required');
-    }
-
-    if (!nome || typeof nome !== 'string' || !validateName(nome)) {
-      errors.push('Nome deve ter pelo menos 2 caracteres');
-    }
-
-    if (!email || typeof email !== 'string' || !validateEmail(email)) {
-      errors.push('Email inválido');
-    }
-
-    if (!consent) {
-      errors.push('Consentimento é obrigatório');
-    }
-
-    if (errors.length > 0) {
-      return new Response(JSON.stringify({
-        ok: false,
-        errors,
-        error: errors.join(', ')
+    
+    // Validate payload
+    const validation = validatePayload(body);
+    if (!validation.valid) {
+      return new Response(JSON.stringify({ 
+        error: 'Validation failed', 
+        details: validation.errors 
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
     }
-
-    // Prepare lead submission
-    const lead: LeadSubmission = {
-      sessionId: sessionId.trim(),
-      nome: nome.trim(),
-      email: email.trim().toLowerCase(),
-      consent,
-      answers: answers || {},
-      startedAt: startedAt || Date.now(),
-      completedAt: completedAt || Date.now(),
-      source: source || 'quiz',
-      utmParams: utmParams || {}
-    };
-
-    // Save lead
-    await saveLead(lead);
-
+    
+    // Store the lead
+    const stored = await storeLead(body as LeadPayload);
+    
+    if (!stored) {
+      return new Response(JSON.stringify({ error: 'Storage failed' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
     // Success response
-    return new Response(JSON.stringify({
-      ok: true,
-      message: 'Lead captured successfully'
+    return new Response(JSON.stringify({ 
+      ok: true, 
+      stored: true 
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
-
+    
   } catch (error) {
-    console.error('[API] Error processing lead:', error);
-
-    return new Response(JSON.stringify({
-      ok: false,
-      error: 'Internal server error'
-    }), {
+    console.error('Lead API error:', error);
+    
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
   }
 };
 
-// Health check endpoint
-export const GET: APIRoute = async () => {
-  return new Response(JSON.stringify({
-    ok: true,
-    service: 'Lead Capture API',
-    timestamp: new Date().toISOString()
-  }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' }
-  });
+// For testing - return method not allowed for other methods
+export const GET: APIRoute = () => {
+  return new Response('Method not allowed', { status: 405 });
+};
+
+export const PUT: APIRoute = () => {
+  return new Response('Method not allowed', { status: 405 });
+};
+
+export const DELETE: APIRoute = () => {
+  return new Response('Method not allowed', { status: 405 });
 };
