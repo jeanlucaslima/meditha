@@ -2,6 +2,7 @@
 import Container from './ui/Container.astro';
 import FooterBase from './ui/FooterBase.astro';
 import Button from './ui/Button.astro';
+import BrandLogo from './ui/BrandLogo.astro';
 
 const currentYear = new Date().getFullYear();
 
@@ -36,11 +37,9 @@ const links = [
       <!-- Footer content -->
       <div class="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
         <!-- Brand -->
-        <div class="text-center md:text-left">
-          <div class="text-xl font-bold text-white mb-2">
-            Método Lux
-          </div>
-          <div class="text-white/60 text-sm">
+        <div class="text-center md:text-left flex flex-col items-center md:items-start">
+          <BrandLogo size="md" class="mb-3" href="/durma" />
+          <div class="text-white/70 text-sm">
             Dormir Natural
           </div>
         </div>

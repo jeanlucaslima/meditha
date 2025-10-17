@@ -14,9 +14,11 @@ import ComparisonSection from '../components/ComparisonSection.astro';
 import ObjectionsSection from '../components/ObjectionsSection.astro';
 import FAQSection from '../components/FAQSection.astro';
 import Footer from '../components/Footer.astro';
+import AnimatedLogo from '../components/AnimatedLogo.astro';
 import StickyCTA from '../components/StickyCTA.tsx';
 import CookieConsent from '../components/CookieConsent.tsx';
 import { COPY } from '../lib/abFlags';
+import { primaryBrandLogo } from '../lib/images';
 
 // Default to variant A for server-side rendering
 // Client-side variant will be determined dynamically
@@ -28,6 +30,7 @@ const title = 'Dormir naturalmente em 7 dias | Método Lux';
 const description = 'Checklist digital baseado em cronobiologia para dormir em até 7 noites sem melatonina, com suporte humano e garantia de 7 dias.';
 
 // Schema.org structured data
+const logoUrl = Astro.site ? new URL(primaryBrandLogo.src, Astro.site).href : primaryBrandLogo.src;
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -71,7 +74,7 @@ const schema = {
       url: 'https://metodolux.com.br',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://metodolux.com.br/logo.png'
+        url: logoUrl
       },
       contactPoint: {
         '@type': 'ContactPoint',
@@ -147,6 +150,9 @@ const schema = {
 
   <!-- FAQ Section -->
   <FAQSection />
+
+  <!-- Animated Logo -->
+  <AnimatedLogo />
 
   <!-- Footer -->
   <Footer />

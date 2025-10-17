@@ -52,3 +52,34 @@ export const iconImages = {
   documentText: '/images/icons/document-text.svg',
   users: '/images/icons/users.svg'
 };
+
+export const brandLogos = {
+  transparent: {
+    svg: '/images/logos/durma-bem/durma-bem-logo-transparente.svg',
+    png512: '/images/logos/durma-bem/durma-bem-logo-transparente-512px.png',
+    png256: '/images/logos/durma-bem/durma-bem-logo-transparente-256px.png',
+    png128: '/images/logos/durma-bem/durma-bem-logo-transparente-128px.png',
+    png64: '/images/logos/durma-bem/durma-bem-logo-transparente-64px.png',
+    jpg512: '/images/logos/durma-bem/durma-bem-logo-transparente-512px.jpg',
+    jpg256: '/images/logos/durma-bem/durma-bem-logo-transparente-256px.jpg'
+  },
+  whiteBackground: {
+    svg: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem.svg',
+    png512: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-512px.png',
+    png256: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-256px.png',
+    png129: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-129px.png',
+    png100: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-100px.png',
+    png64: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-64px.png',
+    jpg512: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-512px.jpg',
+    jpg256: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-256px.jpg',
+    jpg64: '/images/logos/durma-bem/durma-bem-logo-fundo-branco-margem-64px.jpg'
+  },
+  compact: {
+    jpg64: '/images/logos/durma-bem/durma-bem-logo-sem-margem-64px.jpg'
+  }
+} as const;
+
+export const primaryBrandLogo = {
+  src: brandLogos.transparent.svg,
+  alt: 'Método Lux - Durma Bem'
+} as const;
