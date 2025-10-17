@@ -1,0 +1,98 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Card from './ui/Card.astro';
+import Icon from './ui/Icon.astro';
+
+const objections = [
+  {
+    question: 'E se não funcionar para mim?',
+    emotional: 'Entendo o medo de investir em algo e continuar passando noites em claro. Você não precisa acreditar de olhos fechados.',
+    rational: 'Você tem 7 dias de garantia total. Se não sentir evolução, basta enviar uma mensagem e o reembolso é feito sem burocracia.'
+  },
+  {
+    question: 'E se eu não conseguir seguir o checklist?',
+    emotional: 'Ninguém quer outra lista impossível. O Método Lux foi pensado para rotinas reais, com trabalho, filhos e imprevistos.',
+    rational: 'Microações de 5 minutos, versões alternativas para dias corridos e suporte pelo WhatsApp para adaptar à sua realidade.'
+  },
+  {
+    question: 'Já tentei de tudo, por que isso seria diferente?',
+    emotional: 'Provavelmente você recebeu dicas soltas. Aqui você segue uma sequência lógica validada em dezenas de casos.',
+    rational: 'A metodologia combina luz natural, timing de refeições e higiene do sono. Não é um truque isolado, é um sistema.'
+  },
+  {
+    question: 'Preciso abandonar remédios imediatamente?',
+    emotional: 'Seus remédios foram recomendados por um profissional e merecem respeito.',
+    rational: 'O checklist é complementar. Ele ajuda seu corpo a reaprender a dormir naturalmente, sem você precisar fazer mudanças bruscas.'
+  },
+  {
+    question: 'Não tenho tempo para rotinas longas...',
+    emotional: 'Você não quer uma nova tarefa na lista, quer liberdade para deitar e dormir rápido.',
+    rational: 'As ações cabem em dias cheios: exposição à luz matinal, ajustes de tela, jantares estrategicamente antecipados. Coisas simples que cabem em 24h reais.'
+  },
+  {
+    question: 'E se eu trabalhar em turnos ou tiver filhos pequenos?',
+    emotional: 'Nem todo mundo vive numa rotina perfeita. O método considera sono quebrado e adaptações.',
+    rational: 'Você recebe orientações flexíveis para turnos, plantões e despertares noturnos, além de suporte para personalizar.'
+  },
+  {
+    question: 'Não quero ficar presa a um curso enorme...',
+    emotional: 'Você busca clareza, não aulas intermináveis.',
+    rational: 'É um checklist direto ao ponto, com orientações rápidas. Leia, aplique e marque o progresso em minutos.'
+  }
+];
+---
+
+<Section id="objecoes" bg="white">
+  <Container>
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Respondendo às principais objeções
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-3xl mx-auto">
+        Emoção e razão lado a lado, para você decidir com segurança.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      {objections.map((item) => (
+        <Card class="bg-base-100 border border-base-200 shadow-md">
+          <div class="card-body space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
+                <Icon name="question-mark-circle" size="sm" class="text-primary" />
+              </span>
+              <h3 class="text-xl font-semibold text-base-content">
+                {item.question}
+              </h3>
+            </div>
+            <p class="text-base-content/80 leading-relaxed">
+              <strong>Emoção:</strong> {item.emotional}
+            </p>
+            <p class="text-base-content/80 leading-relaxed">
+              <strong>Razão:</strong> {item.rational}
+            </p>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('objecoes');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('objecoes');
+  if (section) {
+    observer.observe(section);
+  }
+</script>

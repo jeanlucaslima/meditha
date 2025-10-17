@@ -1,0 +1,105 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Button from './ui/Button.astro';
+import Icon from './ui/Icon.astro';
+
+const videoUrl = import.meta.env.PUBLIC_VIDEO_URL || '';
+const hasVideo = Boolean(videoUrl);
+
+const videoHighlights = [
+  'Como o ritmo circadiano controla energia e sono',
+  'As três alavancas diárias que Elisa usa com alunas',
+  'O erro mais comum que sabota o sono sem você perceber'
+];
+---
+
+<Section id="video" bg="white">
+  <Container>
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full uppercase text-xs font-semibold tracking-wider mb-4">
+          <Icon name="play" size="sm" class="text-primary" />
+          Aula gratuita
+        </span>
+
+        <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+          Assista à aula introdutória do Método Lux
+        </h2>
+
+        <p class="text-base-content/70 text-lg mb-6 leading-relaxed">
+          Elisa Yoshimura explica em poucos minutos como o checklist funciona, por que a luz importa tanto para o ciclo circadiano e como aplicar as microações ainda hoje.
+        </p>
+
+        <ul class="space-y-3 mb-8">
+          {videoHighlights.map((item) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent/10 text-accent">
+                <Icon name="check-circle" size="sm" class="text-accent" />
+              </span>
+              <span class="text-base-content/80 leading-relaxed">{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <Button
+          href="#oferta"
+          variant="primary"
+          size="lg"
+          class="w-full sm:w-auto"
+          data-event="durma_cta_click"
+          data-position="video"
+        >
+          Quero aplicar o checklist
+        </Button>
+      </div>
+
+      <div class="relative">
+        <div class="rounded-3xl overflow-hidden shadow-2xl border border-base-200 bg-base-100">
+          {hasVideo ? (
+            <div class="aspect-video">
+              <iframe
+                src={videoUrl}
+                title="Aula Método Lux"
+                loading="lazy"
+                class="w-full h-full"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; clipboard-write"
+                allowfullscreen
+              ></iframe>
+            </div>
+          ) : (
+            <div class="aspect-video bg-gradient-to-br from-primary-100 via-accent-100 to-secondary-100 flex flex-col items-center justify-center text-center px-8">
+              <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center mb-4 shadow-lg">
+                <Icon name="play" size="lg" class="text-white" />
+              </div>
+              <p class="text-base-content font-semibold mb-2">
+                Vídeo disponível em breve
+              </p>
+              <p class="text-base-content/70 text-sm max-w-sm">
+                Defina a variável <code class="font-mono text-primary">PUBLIC_VIDEO_URL</code> para incorporar sua aula ou substitua este bloco por um embed personalizado.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('video');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('video');
+  if (section) {
+    observer.observe(section);
+  }
+</script>

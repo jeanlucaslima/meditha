@@ -1,0 +1,110 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Icon from './ui/Icon.astro';
+
+const faqs = [
+  {
+    question: 'O que é o Checklist de Sono Natural?',
+    answer: 'É um material prático que ensina a recuperar o sono natural em poucos dias, com base em ciência do ritmo circadiano, luz natural e hábitos simples. Não é curso nem desafio; é orientação objetiva e aplicada.'
+  },
+  {
+    question: 'Preciso parar meus remédios para usar o método?',
+    answer: 'Não. O checklist não substitui orientação médica. Ele funciona como complemento, ajudando o corpo a readquirir o ritmo natural com segurança e, se for seu objetivo, reduzir gradualmente o uso de remédios sob supervisão.'
+  },
+  {
+    question: 'Funciona mesmo pra quem já tentou de tudo?',
+    answer: 'Sim. O método nasceu justamente da frustração com soluções que não funcionavam. O checklist organiza microações diárias em ordem lógica, o que facilita seguir e manter resultados.'
+  },
+  {
+    question: 'Dá resultado rápido mesmo?',
+    answer: 'A maioria sente diferença em poucos dias: dormir mais rápido, acordar com menos ansiedade e reduzir despertares noturnos. Cada pessoa tem ritmo próprio, mas o passo a passo foi desenhado para acelerar a adaptação.'
+  },
+  {
+    question: 'Tem que seguir horários rígidos?',
+    answer: 'Não. O Método Lux é realista e flexível. Você recebe orientações principais e alternativas para dias imprevisíveis, turnos e rotina com crianças.'
+  },
+  {
+    question: 'É baseado em ciência?',
+    answer: 'Sim. O checklist se apoia em cronobiologia e neurociência do sono, reunindo estudos e protocolos aplicados de forma simples e direta.'
+  },
+  {
+    question: 'Tem acesso vitalício?',
+    answer: 'Sim. Comprou uma vez, acessa quando quiser. Você recebe atualizações futuras sem pagar a mais.'
+  },
+  {
+    question: 'E se não funcionar pra mim?',
+    answer: 'Você tem 7 dias de garantia incondicional. Se não notar progresso, basta enviar uma mensagem e devolvemos o investimento sem perguntas.'
+  },
+  {
+    question: 'Como recebo o checklist depois da compra?',
+    answer: 'Assim que o pagamento é confirmado você recebe um e-mail com acesso imediato. Todo o material fica disponível em área exclusiva, também acessível pelo celular.'
+  },
+  {
+    question: 'Tem suporte humano mesmo?',
+    answer: 'Sim. Durante os primeiros 7 dias você tem um canal direto no WhatsApp com a equipe Método Lux para tirar dúvidas, ajustar o passo a passo e manter o foco.'
+  },
+  {
+    question: 'Funciona para quem trabalha em turnos ou plantões?',
+    answer: 'Funciona porque o checklist traz adaptações específicas para quem tem horários quebrados. Elisa acompanhou alunas em turnos e inseriu alternativas validadas.'
+  },
+  {
+    question: 'Posso aplicar se tenho filhos pequenos que acordam à noite?',
+    answer: 'Sim. Há orientações para quem tem o sono interrompido. O foco é aproveitar janelas de descanso e criar rituais curtos que sinalizam ao corpo quando é hora de desligar.'
+  }
+];
+---
+
+<Section id="faq" bg="base">
+  <Container>
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Perguntas frequentes
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-3xl mx-auto">
+        Tudo que você precisa saber antes de garantir seu acesso.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      {faqs.map((item) => (
+        <details class="group bg-white border border-base-200 rounded-2xl shadow-md transition-all">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer px-6 py-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Icon name="question-mark-circle" size="sm" class="text-primary transition-transform duration-200 group-open:rotate-45" />
+              </span>
+              <h3 class="text-base font-semibold text-base-content">
+                {item.question}
+              </h3>
+            </div>
+            <span class="text-2xl text-primary transition-transform duration-200 group-open:rotate-45">
+              +
+            </span>
+          </summary>
+          <div class="px-6 pb-6 text-base-content/80 leading-relaxed">
+            {item.answer}
+          </div>
+        </details>
+      ))}
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('faq');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('faq');
+  if (section) {
+    observer.observe(section);
+  }
+</script>

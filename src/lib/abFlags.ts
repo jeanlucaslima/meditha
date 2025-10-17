@@ -52,11 +52,11 @@ export function getUserVariant(): Variant {
 
 export const COPY = {
   heroH1: {
-    A: 'Durma melhor em apenas 7 dias.',
-    B: 'Durma naturalmente em 7 dias — sem melatonina.'
+    A: 'Durma em até 7 noites sem melatonina, sem remédios e com resultados reais',
+    B: 'Durma profundamente em 7 noites — natural, sem dependências'
   },
   heroCTA: {
-    A: 'Começar teste',
-    B: 'Fazer teste de 1 minuto'
+    A: 'Quero dormir naturalmente',
+    B: 'Quero dormir profundamente'
   }
 } as const;

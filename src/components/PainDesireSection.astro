@@ -1,0 +1,86 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Card from './ui/Card.astro';
+import Icon from './ui/Icon.astro';
+
+const pains = [
+  'Cansaço constante mesmo dormindo “bem” no relógio.',
+  'Insônia frequente, apesar de deitar esgotada.',
+  'Medo de depender de medicamentos todas as noites.',
+  'Acordar irritada, com dor de cabeça e mente turva.'
+];
+
+const desires = [
+  'Dormir profundamente, sem remédios ou melatonina.',
+  'Acordar com energia e leveza para render no dia.',
+  'Ter um ritual simples que cabe na rotina real.',
+  'Sentir paz ao deitar, sem pensamentos acelerados.'
+];
+---
+
+<Section id="dores-desejos" bg="white">
+  <Container>
+    <div class="grid lg:grid-cols-2 gap-8">
+      <Card class="bg-base-100 border border-base-200 shadow-lg h-full">
+        <div class="card-body space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
+              <Icon name="moon" size="sm" class="text-primary" />
+            </span>
+            <h3 class="text-2xl font-semibold text-base-content">
+              Dores que o Método Lux resolve
+            </h3>
+          </div>
+          <ul class="space-y-3 text-base-content/80">
+            {pains.map((pain) => (
+              <li class="flex items-start gap-3 leading-relaxed">
+                <span class="mt-1 inline-flex h-2 w-2 rounded-full bg-primary"></span>
+                <span>{pain}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Card>
+
+      <Card class="bg-primary text-white shadow-lg h-full border border-primary/50">
+        <div class="card-body space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white flex-shrink-0">
+              <Icon name="heart" size="sm" class="text-white" />
+            </span>
+            <h3 class="text-2xl font-semibold">
+              Desejos que você começa a viver
+            </h3>
+          </div>
+          <ul class="space-y-3 text-white/90">
+            {desires.map((desire) => (
+              <li class="flex items-start gap-3 leading-relaxed">
+                <span class="mt-1 inline-flex h-2 w-2 rounded-full bg-white/70"></span>
+                <span>{desire}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Card>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('dores');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('dores-desejos');
+  if (section) {
+    observer.observe(section);
+  }
+</script>

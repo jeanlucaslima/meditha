@@ -9,36 +9,36 @@ import Badge from './ui/Badge.astro';
 const deliverables = [
   {
     icon: 'document-text',
-    title: 'Diário do Sono – Método Lux',
-    description: 'Um diário estruturado para acompanhar seus padrões de sono e identificar o que funciona melhor para você.',
+    title: 'Checklist Durma Natural',
+    description: 'Guia digital com microações divididas entre manhã, tarde e noite para reprogramar o corpo em até 7 dias.',
     features: [
-      'Registro diário de qualidade do sono',
-      'Identificação de padrões',
-      'Dicas personalizadas'
+      'Passo a passo diário para seguir sem dúvidas',
+      'Rotinas alinhadas ao ritmo circadiano',
+      'Links e lembretes práticos para cada fase do dia'
     ],
-    badge: 'Digital'
+    badge: 'Acesso imediato'
   },
   {
     icon: 'check-circle',
-    title: 'Kit Sono Express',
-    description: 'Checklist diário com ações práticas para implementar imediatamente na sua rotina.',
+    title: 'Checklist Quarto Caverna (Bônus)',
+    description: 'Transforme o ambiente em um convite ao sono profundo com ajustes simples e acessíveis.',
     features: [
-      'Lista de verificação matinal',
-      'Rotina noturna otimizada',
-      'Lembretes inteligentes'
+      'Configuração de luz, temperatura e silêncio',
+      'Sugestões de itens acessíveis e sem exageros',
+      'Checklist de preparação antes de dormir'
     ],
-    badge: 'Imediato'
+    badge: 'Bônus R$67'
   },
   {
     icon: 'chart-bar',
-    title: 'Lux Score',
-    description: 'Sistema de pontuação e gráficos de evolução para visualizar seu progresso ao longo dos 7 dias.',
+    title: 'Suporte humano no WhatsApp',
+    description: 'Canal direto com a equipe para tirar dúvidas e se manter motivada durante a jornada.',
     features: [
-      'Pontuação diária de qualidade',
-      'Gráficos de evolução',
-      'Relatório de progresso'
+      'Respostas rápidas em horário comercial',
+      'Orientação para adaptar o checklist à sua rotina',
+      'Acompanhamento nos primeiros 7 dias'
     ],
-    badge: 'Exclusivo'
+    badge: 'Suporte real'
   }
 ];
 ---
@@ -47,10 +47,10 @@ const deliverables = [
   <Container>
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
-        Seu kit para 7 dias de transformação.
+        O que você recebe ao entrar no Método Lux
       </h2>
       <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-        Tudo que você precisa para implementar o método e acompanhar seus resultados.
+        Checklist completo, bônus exclusivo e suporte humano para garantir que você consiga aplicar cada passo sem travar.
       </p>
     </div>
 
@@ -100,25 +100,25 @@ const deliverables = [
     <div class="mt-16 text-center bg-white rounded-2xl p-8 shadow-lg border border-base-300">
       <div class="max-w-3xl mx-auto">
         <h3 class="text-2xl font-bold text-base-content mb-4">
-          Tudo isso por apenas o tempo de um teste de 1 minuto
+          Valor pequeno, transformação enorme
         </h3>
         <p class="text-lg text-base-content/70 mb-6">
-          Sem custos ocultos, sem assinaturas. Apenas um questionário rápido para receber seu plano personalizado.
+          Receba o checklist completo + bônus por apenas R$67 (de R$214). Acesso imediato, sem mensalidades e com garantia de 7 dias.
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="/durma/quiz"
+            href="#oferta"
             class="btn bg-accent hover:bg-accent-600 text-white btn-lg w-full sm:w-auto shadow-lg hover:shadow-xl transition-all duration-200"
             data-event="durma_cta_click"
             data-position="deliverables"
           >
-            Começar teste gratuito
+            Quero o checklist agora
           </a>
 
           <div class="flex items-center text-base-content/60 text-sm">
             <Icon name="clock" size="sm" class="mr-2" />
-            Apenas 1 minuto
+            Aplicação guiada em menos de 7 dias
           </div>
         </div>
       </div>

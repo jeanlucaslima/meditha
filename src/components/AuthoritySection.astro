@@ -1,0 +1,96 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Card from './ui/Card.astro';
+import Badge from './ui/Badge.astro';
+import Icon from './ui/Icon.astro';
+
+const pillars = [
+  {
+    icon: 'document-text',
+    title: 'Base científica',
+    description: 'Estudos de cronobiologia, ritmos circadianos e luz natural aplicados ao dia a dia.'
+  },
+  {
+    icon: 'heart',
+    title: 'Estilo de vida saudável',
+    description: 'Integração entre sono, alimentação, exposição à luz e manejo de estresse.'
+  },
+  {
+    icon: 'users',
+    title: 'Experimentação real',
+    description: 'Método validado por Elisa em si e em alunos acompanhados individualmente.'
+  }
+];
+---
+
+<Section id="autoridade" bg="white">
+  <Container>
+    <div class="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
+      <div class="space-y-6">
+        <Badge variant="accent" size="lg">
+          Quem está por trás do Método Lux
+        </Badge>
+
+        <h2 class="text-3xl md:text-4xl font-bold text-base-content">
+          Elisa Yoshimura
+        </h2>
+
+        <p class="text-base-content/70 text-lg leading-relaxed">
+          Especialista em estilo de vida saudável, cronobiologia e regulação do ciclo circadiano, Elisa criou o Método Lux depois de resolver a própria insônia sem remédios. Ela transformou anos de estudo em um checklist prático, acessível e livre de achismos.
+        </p>
+
+        <div class="space-y-4 text-base-content/70 leading-relaxed">
+          <p>
+            <strong class="text-base-content">Vivência pessoal:</strong> crises de ansiedade, dependência de melatonina e noites em claro. Em 7 dias, aplicando protocolos de luz, refeição e ambiente, voltou a dormir naturalmente.
+          </p>
+          <p>
+            <strong class="text-base-content">Formação contínua:</strong> cursos e certificações em cronobiologia, sono e hábitos saudáveis, além de mentoria com pesquisadores da área.
+          </p>
+          <p>
+            <strong class="text-base-content">Propósito:</strong> mostrar que dormir bem não depende de remédios caros, mas de hábitos simples implementados na ordem certa.
+          </p>
+        </div>
+      </div>
+
+      <Card class="bg-base-100 border border-base-200 shadow-lg">
+        <div class="card-body space-y-6">
+          <h3 class="text-xl font-semibold text-base-content">
+            Três pilares do Método Lux
+          </h3>
+          <ul class="space-y-4">
+            {pillars.map((pillar) => (
+              <li class="flex items-start gap-3">
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
+                  <Icon name={pillar.icon} size="sm" class="text-primary" />
+                </span>
+                <div>
+                  <p class="font-semibold text-base-content">{pillar.title}</p>
+                  <p class="text-sm text-base-content/70 leading-relaxed">{pillar.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Card>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('autoridade');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('autoridade');
+  if (section) {
+    observer.observe(section);
+  }
+</script>

@@ -9,27 +9,34 @@ import Button from './ui/Button.astro';
 const steps = [
   {
     step: '1',
-    icon: 'play',
-    title: 'Responda ao quiz',
-    description: 'Um questionário rápido de apenas 1 minuto para identificar o que está interferindo no seu sono.',
-    highlight: '1 minuto',
-    hasButton: true,
-    buttonText: 'Começar quiz'
+    icon: 'document-text',
+    title: 'Manhã Lux',
+    description: 'Ao despertar, você segue microações como olhar para o céu, hidratar o corpo e expor-se à luz natural por alguns minutos.',
+    highlight: 'Reset circadiano',
+    hasButton: false
   },
   {
     step: '2',
     icon: 'document-text',
-    title: 'Receba seu plano',
-    description: 'Um plano personalizado e simples para os próximos 7 dias, baseado no seu perfil.',
-    highlight: '7 dias',
+    title: 'Tarde leve',
+    description: 'Orientações para distribuir refeições, reduzir cafeína e manter energia sem cair no cansaço mental.',
+    highlight: 'Rotina guiada',
     hasButton: false
   },
   {
     step: '3',
     icon: 'chart-bar',
-    title: 'Acompanhe o progresso',
-    description: 'Use o checklist diário e veja sua evolução através de gráficos e métricas claras.',
-    highlight: 'Evolução',
+    title: 'Noite sem estímulos',
+    description: 'Checklist para desacelerar o cérebro, controlar luz azul e preparar o corpo para dormir rápido.',
+    highlight: 'Luz controlada',
+    hasButton: false
+  },
+  {
+    step: '4',
+    icon: 'moon',
+    title: 'Quarto caverna',
+    description: 'Passo a passo para montar o ambiente ideal: temperatura, luz, silêncio e rituais calmantes que sinalizam hora de dormir.',
+    highlight: 'Sono profundo',
     hasButton: false
   }
 ];
@@ -39,14 +46,14 @@ const steps = [
   <Container>
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
-        Um método simples que cabe na vida real.
+        Como o Checklist Durma Natural funciona na prática
       </h2>
       <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-        Sem complicações, sem mudanças drásticas. Apenas passos práticos que funcionam.
+        A metodologia combina ritmo circadiano, luz natural e ajustes simples de rotina para entregar resultados consistentes em poucos dias.
       </p>
     </div>
 
-    <Grid cols={3} gap="xl">
+    <Grid cols={4} gap="xl">
       {steps.map((step, index) => (
         <div class="relative">
           {/* Step connector line */}
@@ -76,17 +83,6 @@ const steps = [
               <div class="inline-flex items-center px-3 py-1 bg-accent-100 text-accent-800 rounded-full text-sm font-medium">
                 {step.highlight}
               </div>
-
-              {step.hasButton && (
-                <a
-                  href="/durma/quiz"
-                  class="btn btn-primary mt-4 w-full"
-                  data-event="durma_cta_click"
-                  data-position="quiz-card"
-                >
-                  {step.buttonText}
-                </a>
-              )}
             </div>
           </Card>
         </div>
@@ -96,15 +92,15 @@ const steps = [
     <!-- CTA Section -->
     <div class="text-center mt-16">
       <p class="text-lg text-base-content/80 mb-6">
-        Pronto para começar sua jornada para noites melhores?
+        Pronta para seguir um passo a passo validado e simplificar suas noites?
       </p>
       <a
-        href="/durma/quiz"
+        href="#oferta"
         class="btn btn-primary btn-lg"
         data-event="durma_cta_click"
         data-position="how-it-works"
       >
-        Começar agora
+        Quero o checklist completo
       </a>
     </div>
   </Container>

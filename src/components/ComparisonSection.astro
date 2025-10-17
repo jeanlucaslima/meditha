@@ -1,0 +1,106 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Card from './ui/Card.astro';
+import Button from './ui/Button.astro';
+
+const comparisonRows = [
+  {
+    label: 'Causa do problema',
+    method: 'Ataca a raiz: ritmo circadiano, luz natural, rotina.',
+    others: 'Alivia sintomas, mas não trata desajustes internos.'
+  },
+  {
+    label: 'Custo ao longo do tempo',
+    method: 'Pagamento único de R$67, acesso vitalício.',
+    others: 'Recorrente: consultas, remédios e suplementos.'
+  },
+  {
+    label: 'Efeitos colaterais',
+    method: 'Nenhum. São hábitos naturais e seguros.',
+    others: 'Risco de dependência, tolerância, ressaca e sonolência diurna.'
+  },
+  {
+    label: 'Autonomia',
+    method: 'Você entende como cuidar do próprio sono.',
+    others: 'Fica refém de cápsulas, receitas e dosagens.'
+  },
+  {
+    label: 'Resultados',
+    method: 'Progressivos e sustentáveis, mesmo com rotina corrida.',
+    others: 'Dependem da continuidade do remédio e podem perder efeito.'
+  }
+];
+---
+
+<Section id="comparacao" bg="white">
+  <Container>
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Método Lux vs. soluções tradicionais
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-3xl mx-auto">
+        Escolha o caminho que devolve autonomia, saúde e tranquilidade.
+      </p>
+    </div>
+
+    <Card class="bg-base-100 border border-base-200 shadow-xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm md:text-base">
+          <thead class="bg-primary/10 text-primary uppercase tracking-wider text-xs md:text-sm">
+            <tr>
+              <th class="px-6 py-4 text-base-content">Aspecto</th>
+              <th class="px-6 py-4 text-base-content">Método Lux</th>
+              <th class="px-6 py-4 text-base-content">Remédios / Melatonina</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparisonRows.map((row, index) => (
+              <tr class={`border-t border-base-200 ${index % 2 === 0 ? 'bg-white' : 'bg-base-200/40'}`}>
+                <td class="px-6 py-4 font-semibold text-base-content">
+                  {row.label}
+                </td>
+                <td class="px-6 py-4 text-base-content/80 leading-relaxed">
+                  {row.method}
+                </td>
+                <td class="px-6 py-4 text-base-content/60 leading-relaxed">
+                  {row.others}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+
+    <div class="mt-8 text-center">
+      <Button
+        href="#oferta"
+        variant="primary"
+        size="lg"
+        data-event="durma_cta_click"
+        data-position="comparacao"
+      >
+        Quero dormir naturalmente
+      </Button>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('comparacao');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('comparacao');
+  if (section) {
+    observer.observe(section);
+  }
+</script>

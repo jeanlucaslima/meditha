@@ -8,35 +8,35 @@ import Icon from './ui/Icon.astro';
 const benefits = [
   {
     icon: 'moon',
-    title: 'Sono Natural',
-    description: 'Durma profundamente sem dependência de medicamentos ou suplementos artificiais.'
+    title: 'A mente não desliga',
+    description: 'Você deita exausta, mas o cérebro parece acelerar justamente na hora de dormir.'
   },
   {
     icon: 'heart',
-    title: 'Energia Real',
-    description: 'Acorde revigorado e com disposição para enfrentar o dia com vitalidade.'
+    title: 'Acorda esgotada',
+    description: 'Os dias começam com irritação e sensação de ressaca, mesmo depois de longas horas na cama.'
   },
   {
     icon: 'clock',
-    title: 'Rotina Simples',
-    description: 'Métodos práticos que se encaixam naturalmente na sua vida cotidiana.'
+    title: 'Tentou de tudo',
+    description: 'Sente medo de depender de remédios para sempre porque já tentou várias soluções sem ver resultado.'
   },
   {
     icon: 'check-circle',
-    title: 'Resultados Rápidos',
-    description: 'Melhora perceptível já nos primeiros dias de aplicação do método.'
+    title: 'Quer um caminho guiado',
+    description: 'Deseja dormir profundamente, mas não sabe por onde começar ou como manter uma rotina.'
   }
 ];
 ---
 
-<Section bg="white" id="benefits">
+<Section bg="white" id="publico">
   <Container>
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
-        Sono natural, energia real.
+        Para quem o Método Lux foi criado
       </h2>
       <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-        Descubra os benefícios de dormir bem sem depender de medicamentos ou truques complicados.
+        Se alguma dessas situações descreve suas noites, o Checklist Durma Natural é o passo a passo que você estava buscando.
       </p>
     </div>
 
@@ -67,14 +67,14 @@ const benefits = [
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        trackSectionView('benefits');
+        trackSectionView('publico');
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.3 });
 
-  const benefitsSection = document.getElementById('benefits');
-  if (benefitsSection) {
-    observer.observe(benefitsSection);
+  const publicoSection = document.getElementById('publico');
+  if (publicoSection) {
+    observer.observe(publicoSection);
   }
 </script>

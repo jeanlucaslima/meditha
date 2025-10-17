@@ -1,147 +1,110 @@
 ---
-import Container from './ui/Container.astro';
 import Section from './ui/Section.astro';
-import Grid from './ui/Grid.astro';
+import Container from './ui/Container.astro';
 import Card from './ui/Card.astro';
 import Icon from './ui/Icon.astro';
 import Badge from './ui/Badge.astro';
 
-const testimonials = [
+const progressHighlights = [
   {
-    name: 'Maria Silva',
-    location: 'São Paulo, SP',
-    testimonial: 'Finalmente consegui dormir sem acordar várias vezes durante a noite. O método é simples e realmente funciona!',
-    rating: 5,
-    isSimulated: true
+    icon: 'check-circle',
+    title: 'Saiu da melatonina em 2 dias',
+    description: 'Ao aplicar as microações do checklist, Elisa abandonou os suplementos e dormiu profundamente.'
   },
   {
-    name: 'João Santos',
-    location: 'Rio de Janeiro, RJ',
-    testimonial: 'Estava cético, mas em 5 dias já sentia diferença. Acordo mais disposto e não preciso mais daquela soneca da tarde.',
-    rating: 5,
-    isSimulated: true
+    icon: 'clock',
+    title: 'Acordou naturalmente às 5h30',
+    description: 'Sem despertador ou ressaca, voltou a levantar cedo com energia e clareza mental.'
+  },
+  {
+    icon: 'heart',
+    title: 'Energia estável durante o dia',
+    description: 'Sem picos de ansiedade ou fadiga. A rotina passou a render mesmo em dias intensos.'
   }
 ];
 
-const trustStats = [
-  {
-    number: '+5.000',
-    label: 'pessoas já aplicaram',
-    sublabel: 'nosso checklist'
-  },
-  {
-    number: '87%',
-    label: 'relatam melhora',
-    sublabel: 'nos primeiros 7 dias'
-  },
-  {
-    number: '4.8/5',
-    label: 'avaliação média',
-    sublabel: 'dos usuários'
-  }
+const communityWins = [
+  'Mulheres que trabalhavam em plantão conseguiram regular o sono em menos de 10 dias.',
+  'Quem dependia de melatonina há anos reduziu a dose até zerar, sem efeito rebote.',
+  'Alunas com crianças pequenas aprenderam a voltar a dormir com orientações flexíveis.'
 ];
 ---
 
-<Section bg="white" id="social-proof">
+<Section id="provas" bg="base">
   <Container>
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
-        Resultados que dão confiança.
+        Resultados reais com o Método Lux
       </h2>
-      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-        Milhares de pessoas já transformaram suas noites com o Método Lux.
+      <p class="text-lg text-base-content/70 max-w-3xl mx-auto">
+        Elisa testou cada microação em si antes de levar às alunas. O checklist nasceu dessa experiência própria e de dezenas de casos acompanhados pessoalmente.
       </p>
     </div>
 
-    <!-- Trust stats -->
-    <div class="mb-16">
-      <Grid cols={3} gap="lg">
-        {trustStats.map((stat) => (
-          <div class="text-center">
-            <div class="text-3xl md:text-4xl font-bold text-primary mb-2">
-              {stat.number}
-            </div>
-            <div class="text-base font-medium text-base-content">
-              {stat.label}
-            </div>
-            <div class="text-sm text-base-content/60">
-              {stat.sublabel}
-            </div>
+    <div class="grid lg:grid-cols-[1.25fr_1fr] gap-10 items-stretch mb-12">
+      <Card class="bg-white/80 backdrop-blur border border-base-200 h-full">
+        <div class="card-body space-y-6">
+          <Badge variant="accent" size="lg" class="self-start">
+            Relato da criadora
+          </Badge>
+
+          <div class="space-y-4 text-left">
+            <p class="text-base-content/80 leading-relaxed">
+              <strong>“Eu estava dependente de melatonina e ainda assim acordava moída.”</strong> Depois de estudar cronobiologia e testar protocolos de luz natural, Elisa criou um checklist próprio. Em 48 horas já dormia sem suplementação. Em uma semana estava acordando naturalmente às 5h30, com disposição para trabalhar, treinar e cuidar da família.
+            </p>
+            <p class="text-base-content/70 leading-relaxed">
+              O Método Lux condensa exatamente essas etapas: manhã ativa com luz natural, tarde com energia estável e noite preparada para um sono profundo. Tudo isso com ações pequenas, realistas e cumulativas.
+            </p>
           </div>
-        ))}
-      </Grid>
+        </div>
+      </Card>
+
+      <Card class="bg-white border border-base-200 shadow-lg h-full">
+        <div class="card-body space-y-6">
+          <h3 class="text-xl font-semibold text-base-content">
+            Transformações que você pode esperar
+          </h3>
+          <ul class="space-y-4">
+            {progressHighlights.map((item) => (
+              <li class="flex items-start gap-3">
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
+                  <Icon name={item.icon} size="sm" class="text-primary" />
+                </span>
+                <div>
+                  <p class="font-semibold text-base-content">{item.title}</p>
+                  <p class="text-sm text-base-content/70 leading-relaxed">{item.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Card>
     </div>
 
-    <!-- Main trust badge -->
-    <div class="text-center mb-16">
-      <Badge variant="accent" size="lg" class="text-lg px-6 py-3">
-        +5.000 pessoas já aplicaram nosso checklist
-      </Badge>
-    </div>
-
-    <!-- Testimonials -->
-    <Grid cols={2} gap="lg" class="max-w-4xl mx-auto">
-      {testimonials.map((testimonial) => (
-        <Card class="h-full">
-          <div class="flex flex-col h-full">
-            <!-- Rating stars -->
-            <div class="flex items-center mb-4">
-              {Array.from({ length: testimonial.rating }, (_, i) => (
-                <Icon name="star" size="sm" class="text-yellow-400 fill-current" />
-              ))}
-            </div>
-
-            <!-- Testimonial text -->
-            <blockquote class="text-base-content/80 italic mb-6 flex-1">
-              "{testimonial.testimonial}"
-            </blockquote>
-
-            <!-- Author info -->
-            <div class="flex items-center justify-between">
-              <div>
-                <div class="font-medium text-base-content">
-                  {testimonial.name}
-                </div>
-                <div class="text-sm text-base-content/60">
-                  {testimonial.location}
-                </div>
-              </div>
-
-              {testimonial.isSimulated && (
-                <Badge variant="neutral" size="sm">
-                  Simulado
-                </Badge>
-              )}
-            </div>
-          </div>
-        </Card>
-      ))}
-    </Grid>
-
-    <!-- CTA Section -->
-    <div class="text-center mt-16 p-8 bg-gradient-to-r from-accent-50 to-accent-100 rounded-2xl border border-accent-200">
-      <h3 class="text-2xl font-bold text-base-content mb-4">
-        Junte-se às milhares de pessoas que já melhoraram seu sono
-      </h3>
-      <p class="text-base-content/70 mb-6">
-        Comece seu teste gratuito de 1 minuto agora mesmo.
-      </p>
-      <a
-        href="/durma/quiz"
-        class="btn bg-accent hover:bg-accent-600 text-white btn-lg shadow-lg hover:shadow-xl transition-all duration-200"
-        data-event="durma_cta_click"
-        data-position="social-proof"
-      >
-        Fazer teste gratuito
-      </a>
+    <div class="bg-white rounded-3xl border border-base-200 p-8 shadow-lg">
+      <div class="grid md:grid-cols-[auto,1fr] gap-6 items-start">
+        <div class="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 text-primary rounded-full font-semibold">
+          <Icon name="users" size="sm" class="text-primary" />
+          Histórias da comunidade
+        </div>
+        <ul class="space-y-3 text-base-content/80">
+          {communityWins.map((win) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-white text-xs font-bold">
+                ✓
+              </span>
+              <span>{win}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </Container>
 </Section>
 
 <script>
-  import { trackSectionView, trackCTAClick } from '../lib/analytics';
+  import { trackSectionView } from '../lib/analytics';
 
-  // Track section view
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -151,16 +114,8 @@ const trustStats = [
     });
   }, { threshold: 0.3 });
 
-  const section = document.getElementById('social-proof');
+  const section = document.getElementById('provas');
   if (section) {
     observer.observe(section);
-  }
-
-  // Track CTA clicks
-  const ctaButton = section?.querySelector('[data-event="durma_cta_click"]');
-  if (ctaButton) {
-    ctaButton.addEventListener('click', () => {
-      trackCTAClick('social-proof');
-    });
   }
 </script>

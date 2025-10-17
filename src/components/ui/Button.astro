@@ -9,6 +9,8 @@ export interface Props {
   id?: string;
   'data-event'?: string;
   'data-position'?: string;
+  target?: string;
+  rel?: string;
 }
 
 const {
@@ -20,7 +22,9 @@ const {
   class: className = '',
   id,
   'data-event': dataEvent,
-  'data-position': dataPosition
+  'data-position': dataPosition,
+  target,
+  rel
 } = Astro.props;
 
 const baseClasses = 'btn focus-ring';
@@ -50,7 +54,7 @@ const commonProps = {
 ---
 
 {href ? (
-  <a href={href} {...commonProps}>
+  <a href={href} {...commonProps} target={target} rel={rel}>
     <slot />
   </a>
 ) : (

@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'preact/hooks';
-import { trackCTAClick, trackQuizStart } from '../lib/analytics';
+import { trackCTAClick } from '../lib/analytics';
 
 interface Props {
   ctaText?: string;
   variant?: 'A' | 'B';
 }
 
-export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }: Props) {
+export default function StickyCTA({ ctaText = 'Quero dormir naturalmente', variant: _variant = 'A' }: Props) {
   const [isVisible, setIsVisible] = useState(false);
-  const [heroElement, setHeroElement] = useState<Element | null>(null);
 
   useEffect(() => {
     // Find the hero CTA button instead of the entire hero section
@@ -43,16 +42,12 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
 
   const handleClick = () => {
     trackCTAClick('sticky');
-    trackQuizStart();
-
-    // Add UTM parameters
-    const url = new URL('/durma/quiz', window.location.origin);
-    url.searchParams.set('utm_source', 'durma_landing');
-    url.searchParams.set('utm_medium', 'sticky_cta');
-    url.searchParams.set('utm_campaign', 'lux_method');
-    url.searchParams.set('variant', variant);
-
-    window.location.href = url.toString();
+    const offerSection = document.getElementById('oferta');
+    if (offerSection) {
+      offerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.hash = 'oferta';
+    }
   };
 
   if (!isVisible) return null;
@@ -67,10 +62,10 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
             <p className="text-base-content font-semibold text-sm sm:text-base">
-              Descubra o que está sabotando seu sono
+              Checklist Método Lux com passo a passo diário
             </p>
             <p className="text-base-content/70 text-xs sm:text-sm">
-              Teste gratuito de 1 minuto
+              Acesso imediato + Bônus Quarto Caverna
             </p>
           </div>
 
@@ -79,6 +74,7 @@ export default function StickyCTA({ ctaText = 'Começar teste', variant = 'A' }:
             className="btn bg-accent hover:bg-accent-600 text-white btn-lg w-full sm:w-auto whitespace-nowrap animate-bounce-subtle shadow-lg hover:shadow-xl transition-all duration-200"
             data-event="durma_cta_click"
             data-position="sticky"
+            data-variant={_variant}
           >
             {ctaText}
           </button>

@@ -1,10 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import VideoSection from '../components/VideoSection.astro';
 import BenefitsGrid from '../components/BenefitsGrid.astro';
+import PainDesireSection from '../components/PainDesireSection.astro';
 import HowItWorks from '../components/HowItWorks.astro';
-import SocialProof from '../components/SocialProof.astro';
+import RationaleSection from '../components/RationaleSection.astro';
 import Deliverables from '../components/Deliverables.astro';
+import OfferSection from '../components/OfferSection.astro';
+import SocialProof from '../components/SocialProof.astro';
+import AuthoritySection from '../components/AuthoritySection.astro';
+import ComparisonSection from '../components/ComparisonSection.astro';
+import ObjectionsSection from '../components/ObjectionsSection.astro';
+import FAQSection from '../components/FAQSection.astro';
 import Footer from '../components/Footer.astro';
 import StickyCTA from '../components/StickyCTA.tsx';
 import CookieConsent from '../components/CookieConsent.tsx';
@@ -17,7 +25,7 @@ const ctaText = COPY.heroCTA[variant];
 
 // SEO Data
 const title = 'Dormir naturalmente em 7 dias | Método Lux';
-const description = 'Descubra hábitos que sabotam seu sono com um teste de 1 minuto e um plano simples de 7 dias — 100% natural, sem melatonina.';
+const description = 'Checklist digital baseado em cronobiologia para dormir em até 7 noites sem melatonina, com suporte humano e garantia de 7 dias.';
 
 // Schema.org structured data
 const schema = {
@@ -50,7 +58,7 @@ const schema = {
         {
           '@type': 'ListItem',
           position: 2,
-          name: 'Durma Melhor',
+          name: 'Checklist Método Lux',
           item: 'https://metodolux.com.br/durma'
         }
       ]
@@ -73,28 +81,24 @@ const schema = {
     },
     {
       '@type': 'Service',
-      name: 'Método Lux - Dormir Natural',
-      description: 'Programa de 7 dias para melhorar a qualidade do sono naturalmente',
+      name: 'Checklist Durma Natural – Método Lux',
+      description: 'Checklist digital para dormir naturalmente em até 7 noites, com suporte humano e garantia de 7 dias.',
       provider: {
         '@type': 'Organization',
         name: 'Método Lux'
       },
-      serviceType: 'Sleep Improvement Program',
+      serviceType: 'Digital Product',
       areaServed: 'BR',
-      hasOfferCatalog: {
-        '@type': 'OfferCatalog',
-        name: 'Serviços de Melhoria do Sono',
-        itemListElement: [
-          {
-            '@type': 'Offer',
-            itemOffered: {
-              '@type': 'Service',
-              name: 'Teste de Qualidade do Sono',
-              description: 'Avaliação gratuita de 1 minuto para identificar problemas do sono'
-            }
-          }
-        ]
-      }
+      offers: [
+        {
+          '@type': 'Offer',
+          price: '67.00',
+          priceCurrency: 'BRL',
+          availability: 'https://schema.org/InStock',
+          url: 'https://metodolux.com.br/durma',
+          itemCondition: 'https://schema.org/NewCondition'
+        }
+      ]
     }
   ]
 };
@@ -108,17 +112,41 @@ const schema = {
   <!-- Hero Section -->
   <Hero variant={variant} />
 
+  <!-- Video Section -->
+  <VideoSection />
+
   <!-- Benefits Section -->
   <BenefitsGrid />
+
+  <!-- Pain and Desires -->
+  <PainDesireSection />
 
   <!-- How It Works Section -->
   <HowItWorks />
 
-  <!-- Social Proof Section -->
-  <SocialProof />
+  <!-- Scientific Rationale -->
+  <RationaleSection />
 
   <!-- Deliverables Section -->
   <Deliverables />
+
+  <!-- Offer Section -->
+  <OfferSection />
+
+  <!-- Social Proof Section -->
+  <SocialProof />
+
+  <!-- Authority Section -->
+  <AuthoritySection />
+
+  <!-- Comparison Section -->
+  <ComparisonSection />
+
+  <!-- Objections Section -->
+  <ObjectionsSection />
+
+  <!-- FAQ Section -->
+  <FAQSection />
 
   <!-- Footer -->
   <Footer />
@@ -134,34 +162,6 @@ const schema = {
   // Track page view on load
   document.addEventListener('DOMContentLoaded', () => {
     trackPageView();
-  });
-
-  // Add UTM parameters to all quiz links
-  document.addEventListener('DOMContentLoaded', () => {
-    const quizLinks = document.querySelectorAll('a[href="/quiz"], a[href*="quiz"]');
-
-    quizLinks.forEach((link) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        const url = new URL('/durma/quiz', window.location.origin);
-        url.searchParams.set('utm_source', 'durma_landing');
-        url.searchParams.set('utm_medium', 'cta_click');
-        url.searchParams.set('utm_campaign', 'lux_method');
-
-        // Add variant info
-        const variant = localStorage.getItem('ab_variant') || 'A';
-        url.searchParams.set('variant', variant);
-
-        // Add position info if available
-        const position = (e.target as HTMLElement).getAttribute('data-position');
-        if (position) {
-          url.searchParams.set('utm_content', position);
-        }
-
-        window.location.href = url.toString();
-      });
-    });
   });
 </script>
 

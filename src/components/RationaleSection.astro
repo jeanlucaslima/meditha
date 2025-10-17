@@ -1,0 +1,92 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Card from './ui/Card.astro';
+import Icon from './ui/Icon.astro';
+
+const rationales = [
+  {
+    icon: 'clock',
+    title: 'Cronobiologia aplicada',
+    description: 'O checklist sincroniza exposição à luz, horários de refeição e rotina noturna com o relógio biológico.'
+  },
+  {
+    icon: 'document-text',
+    title: 'Neurociência do sono',
+    description: 'Microações reduzem cortisol à noite e aumentam melatonina natural, sem suplementos externos.'
+  },
+  {
+    icon: 'chart-bar',
+    title: 'Método testado',
+    description: 'Protocolos validados por Elisa e por alunos acompanhados, com ajustes para diferentes perfis de rotina.'
+  }
+];
+
+const scienceBullets = [
+  'Uso estratégico da luz solar matinal para resetar o ritmo circadiano.',
+  'Redução gradual de luz azul e temperatura do corpo no período noturno.',
+  'Organização de refeições e exposição à luz ambiente para estabilizar energia.',
+  'Checklist com linguagem simples, sem termos técnicos desnecessários.'
+];
+---
+
+<Section id="racional" bg="base">
+  <Container>
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-4">
+        Base científica traduzida para a vida real
+      </h2>
+      <p class="text-lg text-base-content/70 max-w-3xl mx-auto">
+        Você não precisa virar especialista em sono. O Método Lux condensa estudos de cronobiologia e neurociência em ações simples, ordenadas e sustentáveis.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+      {rationales.map((item) => (
+        <Card class="bg-white border border-base-200 shadow-lg h-full">
+          <div class="card-body space-y-4">
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Icon name={item.icon} size="md" class="text-primary" />
+            </span>
+            <h3 class="text-xl font-semibold text-base-content">{item.title}</h3>
+            <p class="text-base-content/70 leading-relaxed text-sm md:text-base">
+              {item.description}
+            </p>
+          </div>
+        </Card>
+      ))}
+    </div>
+
+    <div class="bg-white rounded-3xl border border-base-200 p-8 shadow-lg">
+      <h3 class="text-2xl font-semibold text-base-content mb-6">
+        Como isso se traduz no seu dia a dia
+      </h3>
+      <ul class="grid md:grid-cols-2 gap-4 text-base-content/80">
+        {scienceBullets.map((bullet) => (
+          <li class="flex items-start gap-3 leading-relaxed">
+            <span class="mt-1 inline-flex h-2 w-2 rounded-full bg-accent"></span>
+            <span>{bullet}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('racional');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('racional');
+  if (section) {
+    observer.observe(section);
+  }
+</script>

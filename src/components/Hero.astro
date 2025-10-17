@@ -2,6 +2,7 @@
 import Container from './ui/Container.astro';
 import Button from './ui/Button.astro';
 import Badge from './ui/Badge.astro';
+import Icon from './ui/Icon.astro';
 import { COPY } from '../lib/abFlags';
 
 export interface Props {
@@ -13,9 +14,22 @@ const { variant = 'A' } = Astro.props;
 // Default text for server-side rendering
 const defaultH1Text = COPY.heroH1.A;
 const defaultCtaText = COPY.heroCTA.A;
+
+const discoverItems = [
+  'O que está sabotando seu sono mesmo se você estiver exausta',
+  'Como usar luz natural para reprogramar o corpo',
+  'O passo a passo para dormir rápido sem depender de nada externo',
+  'Como pessoas comuns estão dormindo bem em menos de 7 dias com o Método Lux'
+];
+
+const trustBadges = [
+  'Baseado em ciência do sono',
+  'Checklist prático e diário',
+  'Garantia incondicional de 7 dias'
+];
 ---
 
-<section class="relative bg-gradient-to-br from-base-100 to-accent-50 overflow-hidden">
+<section id="hero-section" class="relative bg-gradient-to-br from-base-100 to-accent-50 overflow-hidden">
   <!-- Background overlay -->
   <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/10"></div>
 
@@ -30,29 +44,60 @@ const defaultCtaText = COPY.heroCTA.A;
         </h1>
 
         <p class="text-lg md:text-xl text-base-content/80 mb-8 leading-relaxed text-balance">
-          Descubra o que está sabotando seu sono com um teste rápido de 1 minuto.
+          Um checklist simples, baseado na ciência do sono e no ritmo circadiano, para dormir profundamente e acordar com energia.
         </p>
 
-        <!-- CTA Button -->
-        <div class="mb-8">
+        <div class="bg-white/70 backdrop-blur-sm border border-white/60 rounded-2xl p-6 mb-8 shadow-lg">
+          <p class="text-sm font-semibold uppercase tracking-wider text-primary mb-4">
+            Ao assistir ao vídeo, você vai descobrir:
+          </p>
+          <ul class="space-y-3 text-left">
+            {discoverItems.map((item) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Icon name="check-circle" size="sm" class="text-primary" />
+                </span>
+                <span class="text-base-content/80 leading-relaxed">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center sm:items-stretch gap-4 mb-8">
           <Button
-            href="/durma/quiz"
+            href="#oferta"
             variant="primary"
             size="lg"
-            class="w-full sm:w-auto mb-4 sm:mb-0 sm:mr-4 animate-bounce-subtle"
+            class="w-full sm:w-auto animate-bounce-subtle"
             data-event="durma_cta_click"
             data-position="hero"
             id="hero-cta"
           >
             {defaultCtaText}
           </Button>
+
+          <Button
+            href="#video"
+            variant="outline"
+            size="lg"
+            class="w-full sm:w-auto border-primary text-primary hover:bg-primary/10"
+            data-event="durma_cta_click"
+            data-position="hero-video"
+          >
+            Assistir ao vídeo
+          </Button>
         </div>
 
         <!-- Trust indicators -->
         <div class="flex flex-wrap justify-center lg:justify-start gap-4 items-center">
-          <Badge variant="accent" class="whitespace-nowrap">100% natural</Badge>
-          <Badge variant="accent" class="whitespace-nowrap">Sem melatonina</Badge>
-          <Badge variant="accent" class="whitespace-nowrap">Checklist prático</Badge>
+          {trustBadges.map((badge) => (
+            <Badge variant="accent" class="whitespace-nowrap">
+              {badge}
+            </Badge>
+          ))}
         </div>
       </div>
 
@@ -61,16 +106,18 @@ const defaultCtaText = COPY.heroCTA.A;
         <div class="relative">
           <!-- Placeholder for hero image -->
           <div class="relative aspect-[4/3] bg-gradient-to-br from-primary-100 to-accent-100 rounded-2xl shadow-2xl overflow-hidden">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="text-center">
-                <div class="w-24 h-24 mx-auto mb-4 bg-primary-200 rounded-full flex items-center justify-center">
-                  <svg class="w-12 h-12 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"></path>
-                  </svg>
-                </div>
-                <p class="text-primary-700 font-medium">Pessoa dormindo tranquilamente</p>
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+              <div class="w-20 h-20 mb-4 bg-primary text-white rounded-full flex items-center justify-center shadow-lg">
+                <Icon name="play" size="lg" class="text-white" />
               </div>
+              <p class="text-lg font-semibold text-primary-700 mb-2">
+                Aula gratuita com Elisa Yoshimura
+              </p>
+              <p class="text-base text-primary-700/80">
+                Entenda o Método Lux em menos de 15 minutos e veja como o checklist guia você noite após noite.
+              </p>
             </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent pointer-events-none"></div>
           </div>
 
           <!-- Floating elements -->
@@ -113,7 +160,7 @@ const defaultCtaText = COPY.heroCTA.A;
     });
   }, { threshold: 0.5 });
 
-  const heroSection = document.querySelector('section');
+  const heroSection = document.getElementById('hero-section');
   if (heroSection) {
     observer.observe(heroSection);
   }

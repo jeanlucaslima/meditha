@@ -1,0 +1,189 @@
+---
+import Section from './ui/Section.astro';
+import Container from './ui/Container.astro';
+import Card from './ui/Card.astro';
+import Button from './ui/Button.astro';
+import Icon from './ui/Icon.astro';
+import Badge from './ui/Badge.astro';
+
+const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || '#oferta';
+const hasCheckoutUrl = Boolean(import.meta.env.PUBLIC_CHECKOUT_URL);
+
+const offerLines = [
+  { label: 'Checklist Durma Natural', value: 'R$147' },
+  { label: 'Bônus Checklist Quarto Caverna', value: 'R$67' },
+  { label: 'Suporte humano no WhatsApp', value: 'Incluído' }
+];
+
+const rationalPoints = [
+  'Cronobiologia e neurociência do sono simplificadas',
+  'Protocolos de luz natural e escuro validados por Elisa',
+  'Rotinas flexíveis para diferentes horários e perfis'
+];
+---
+
+<Section id="oferta" bg="white">
+  <Container>
+    <div class="grid lg:grid-cols-[1.75fr_1fr] gap-10 items-start">
+      <Card class="bg-base-100 border border-base-200 shadow-xl">
+        <div class="card-body space-y-6">
+          <Badge variant="accent" size="lg" class="self-start">
+            Oferta especial
+          </Badge>
+
+          <div>
+            <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-3">
+              Garanta seu checklist completo por R$67
+            </h2>
+            <p class="text-base-content/70 text-lg leading-relaxed">
+              Um plano guiado, com acesso imediato, para recuperar o sono natural em até 7 noites. Você recebe o checklist principal, bônus exclusivo e acompanhamento inicial para não andar sozinha.
+            </p>
+          </div>
+
+          <div class="bg-base-200/60 rounded-2xl p-6 space-y-4">
+            <ul class="space-y-3">
+              {offerLines.map((item) => (
+                <li class="flex items-center justify-between text-base-content/80 text-sm md:text-base">
+                  <span class="font-medium">{item.label}</span>
+                  <span>{item.value}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div class="border-t border-base-300 pt-4 flex flex-wrap items-baseline gap-4 justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-widest text-base-content/60">
+                  Preço promocional
+                </p>
+                <p class="text-3xl md:text-4xl font-bold text-primary">
+                  R$67
+                </p>
+                <p class="text-sm text-base-content/60">
+                  ou 12x de R$6,97
+                </p>
+              </div>
+
+              <div class="text-base-content/70 text-sm">
+                <p>Acesso imediato + atualizações futuras</p>
+                <p>Pagamento seguro 100% online</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <Button
+              href={checkoutUrl}
+              variant="primary"
+              size="lg"
+              class="w-full"
+              data-event="durma_cta_click"
+              data-position="offer-primary"
+              target={hasCheckoutUrl ? '_blank' : undefined}
+              rel={hasCheckoutUrl ? 'noopener noreferrer' : undefined}
+            >
+              Quero garantir meu acesso
+            </Button>
+
+            {!hasCheckoutUrl && (
+              <p class="text-xs text-base-content/60 text-center">
+                Defina <code class="font-mono text-primary">PUBLIC_CHECKOUT_URL</code> para direcionar este botão ao checkout.
+              </p>
+            )}
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            {rationalPoints.map((point) => (
+              <div class="flex items-start gap-3 text-base-content/70 text-sm">
+                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Icon name="check-circle" size="sm" class="text-primary" />
+                </span>
+                <span>{point}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Card>
+
+      <div class="space-y-6">
+        <Card class="bg-base-100 border border-base-200 shadow-lg">
+          <div class="card-body space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-accent">
+                <Icon name="check-circle" size="md" class="text-accent" />
+              </span>
+              <div>
+                <h3 class="text-xl font-semibold text-base-content">
+                  Garantia incondicional de 7 dias
+                </h3>
+                <p class="text-sm text-base-content/60">
+                  Teste sem risco. Se não sentir melhora nas noites, é só pedir reembolso com uma mensagem. Sem perguntas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card class="bg-base-100 border border-base-200 shadow-lg">
+          <div class="card-body space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary/10 text-secondary">
+                <Icon name="users" size="md" class="text-secondary" />
+              </span>
+              <div>
+                <h3 class="text-xl font-semibold text-base-content">
+                  Suporte humano via WhatsApp
+                </h3>
+                <p class="text-sm text-base-content/60">
+                  Dúvidas, adaptações e incentivo direto com a equipe Método Lux durante os primeiros 7 dias.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card class="bg-base-100 border border-base-200 shadow-lg">
+          <div class="card-body space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Icon name="document-text" size="md" class="text-primary" />
+              </span>
+              <div>
+                <h3 class="text-xl font-semibold text-base-content">
+                  Conteúdo direto ao ponto
+                </h3>
+                <p class="text-sm text-base-content/60">
+                  Nada de aulas longas ou teorias confusas. É checklist aplicável, com orientações objetivas e linguagem leve.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { trackSectionView, trackCTAClick } from '../lib/analytics';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        trackSectionView('offer');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('oferta');
+  if (section) {
+    observer.observe(section);
+  }
+
+  const primaryCTA = section?.querySelector('[data-position="offer-primary"]');
+  if (primaryCTA) {
+    primaryCTA.addEventListener('click', () => {
+      trackCTAClick('offer');
+    });
+  }
+</script>
