@@ -76,7 +76,12 @@ const ogUrl = Astro.site ? new URL(ogImage, Astro.site).href : ogImage;
   </head>
   <body class="bg-base-100 text-base-content antialiased">
     {showHeader && (
-      <header class="sticky top-0 z-50 border-b border-base-300/40 bg-white/80 backdrop-blur">
+      <header
+        class="site-header sticky top-0 z-50 border-b border-base-300/40 bg-white/80 backdrop-blur"
+        data-site-header
+        data-visible="false"
+        aria-hidden="true"
+      >
         <Container class="flex items-center justify-between py-4" padding={true}>
           <BrandLogo size="sm" class="text-base-content" />
         </Container>
@@ -105,6 +110,50 @@ const ogUrl = Astro.site ? new URL(ogImage, Astro.site).href : ogImage;
       }
 
       window.addEventListener('scroll', handleScroll, { passive: true });
+
+      // Reveal header after hero scroll
+      const header = document.querySelector('[data-site-header]');
+      const heroSection = document.getElementById('hero-section');
+
+      if (header && heroSection) {
+        const toggleHeaderVisibility = (visible) => {
+          header.setAttribute('data-visible', visible ? 'false' : 'true');
+          header.setAttribute('aria-hidden', visible ? 'true' : 'false');
+        };
+
+        const headerObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              toggleHeaderVisibility(entry.isIntersecting);
+            });
+          },
+          { threshold: 0.4 }
+        );
+
+        headerObserver.observe(heroSection);
+      } else if (header) {
+        header.setAttribute('data-visible', 'true');
+        header.setAttribute('aria-hidden', 'false');
+      }
     </script>
   </body>
 </html>
+
+<style>
+  :global(header[data-site-header]) {
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition:
+      transform 200ms ease-out,
+      opacity 200ms ease-out,
+      box-shadow 200ms ease-out;
+  }
+
+  :global(header[data-site-header][data-visible='true']) {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: 0 10px 30px -12px rgba(15, 23, 42, 0.25);
+  }
+</style>

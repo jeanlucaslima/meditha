@@ -1,8 +1,40 @@
-<div class="relative flex justify-center py-16">
+---
+export interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  padding?: boolean;
+  dropShadow?: boolean;
+  ariaLabel?: string;
+}
+
+const {
+  size = 'md',
+  class: className = '',
+  padding = true,
+  dropShadow = true,
+  ariaLabel = 'Método Lux - Durma Bem'
+} = Astro.props;
+
+const wrapperClass = `relative flex justify-center ${padding ? 'py-16' : ''} ${className}`.trim();
+
+const sizeClasses = {
+  sm: 'max-w-[160px]',
+  md: 'max-w-[320px]',
+  lg: 'max-w-[420px]'
+} as const;
+
+const svgClasses = [
+  'w-full',
+  sizeClasses[size] ?? sizeClasses.md,
+  dropShadow ? 'drop-shadow-lg' : ''
+].filter(Boolean).join(' ');
+---
+
+<div class={wrapperClass}>
   <svg
-    class="max-w-[320px] w-full drop-shadow-lg"
+    class={svgClasses}
     role="img"
-    aria-label="Método Lux - Durma Bem"
+    aria-label={ariaLabel}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 588.61 598.19"
   >

@@ -4,6 +4,7 @@ import Button from './ui/Button.astro';
 import Badge from './ui/Badge.astro';
 import Icon from './ui/Icon.astro';
 import { COPY } from '../lib/abFlags';
+import AnimatedLogo from './AnimatedLogo.astro';
 
 export interface Props {
   variant?: 'A' | 'B';
@@ -35,6 +36,8 @@ const trustBadges = [
 
   <!-- Hero content -->
   <Container class="relative z-10">
+    <AnimatedLogo size="sm" padding={false} class="mt-6 mb-10" dropShadow={false} />
+
     <div class="flex flex-col lg:flex-row items-center justify-between min-h-[80vh] py-12 lg:py-20">
 
       <!-- Left content -->
