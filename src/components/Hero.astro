@@ -36,12 +36,18 @@ const trustBadges = [
 
   <!-- Hero content -->
   <Container class="relative z-10">
-    <AnimatedLogo size="sm" padding={false} class="mt-6 mb-10" dropShadow={false} />
-
     <div class="flex flex-col lg:flex-row items-center justify-between min-h-[80vh] py-12 lg:py-20">
 
       <!-- Left content -->
       <div class="flex-1 lg:pr-12 text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
+        <AnimatedLogo
+          size="sm"
+          padding={false}
+          dropShadow={false}
+          align="start"
+          class="mb-8 lg:mb-10"
+        />
+
         <h1 id="hero-h1" class="text-4xl md:text-5xl lg:text-6xl font-bold text-base-content leading-tight mb-6 text-balance">
           {defaultH1Text}
         </h1>

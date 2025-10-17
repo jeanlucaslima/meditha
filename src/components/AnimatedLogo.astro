@@ -5,6 +5,7 @@ export interface Props {
   padding?: boolean;
   dropShadow?: boolean;
   ariaLabel?: string;
+  align?: 'start' | 'center' | 'end';
 }
 
 const {
@@ -12,10 +13,17 @@ const {
   class: className = '',
   padding = true,
   dropShadow = true,
-  ariaLabel = 'Método Lux - Durma Bem'
+  ariaLabel = 'Método Lux - Durma Bem',
+  align = 'center'
 } = Astro.props;
 
-const wrapperClass = `relative flex justify-center ${padding ? 'py-16' : ''} ${className}`.trim();
+const justifyClass = {
+  start: 'justify-start',
+  center: 'justify-center',
+  end: 'justify-end'
+} as const;
+
+const wrapperClass = `relative flex ${justifyClass[align] ?? justifyClass.center} ${padding ? 'py-16' : ''} ${className}`.trim();
 
 const sizeClasses = {
   sm: 'max-w-[160px]',

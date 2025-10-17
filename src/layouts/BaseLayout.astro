@@ -77,7 +77,7 @@ const ogUrl = Astro.site ? new URL(ogImage, Astro.site).href : ogImage;
   <body class="bg-base-100 text-base-content antialiased">
     {showHeader && (
       <header
-        class="site-header sticky top-0 z-50 border-b border-base-300/40 bg-white/80 backdrop-blur"
+        class="site-header fixed inset-x-0 top-0 z-50 border-b border-base-300/40 bg-white/80 backdrop-blur"
         data-site-header
         data-visible="false"
         aria-hidden="true"
