@@ -6,8 +6,9 @@ import Button from './ui/Button.astro';
 import Icon from './ui/Icon.astro';
 import Badge from './ui/Badge.astro';
 
-const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || '#oferta';
-const hasCheckoutUrl = Boolean(import.meta.env.PUBLIC_CHECKOUT_URL);
+const externalCheckoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL;
+const checkoutUrl = externalCheckoutUrl || '/durma/checkout';
+const openInNewTab = Boolean(externalCheckoutUrl && /^https?:\/\//.test(externalCheckoutUrl));
 
 const offerLines = [
   { label: 'Checklist Durma Natural', value: 'R$147' },
@@ -78,17 +79,11 @@ const rationalPoints = [
               class="w-full"
               data-event="durma_cta_click"
               data-position="offer-primary"
-              target={hasCheckoutUrl ? '_blank' : undefined}
-              rel={hasCheckoutUrl ? 'noopener noreferrer' : undefined}
+              target={openInNewTab ? '_blank' : undefined}
+              rel={openInNewTab ? 'noopener noreferrer' : undefined}
             >
               Quero garantir meu acesso
             </Button>
-
-            {!hasCheckoutUrl && (
-              <p class="text-xs text-base-content/60 text-center">
-                Defina <code class="font-mono text-primary">PUBLIC_CHECKOUT_URL</code> para direcionar este botão ao checkout.
-              </p>
-            )}
           </div>
 
           <div class="grid md:grid-cols-2 gap-4">

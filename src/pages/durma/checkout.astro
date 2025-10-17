@@ -1,0 +1,351 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Card from '../../components/ui/Card.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const title = 'Finalizar compra | Método Lux';
+const description = 'Conclua seu acesso ao Checklist Método Lux com pagamento seguro via Stripe e suporte humano para garantir noites de sono profundo.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Section bg="base" class="min-h-screen">
+    <Container maxWidth="5xl" class="py-16">
+      <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+        <div class="space-y-8">
+          <div class="space-y-4">
+            <Badge variant="accent" size="lg" class="uppercase tracking-wide">
+              passo final
+            </Badge>
+            <h1 class="text-4xl font-bold text-base-content">
+              Complete seu acesso ao Método Lux
+            </h1>
+            <p class="text-lg text-base-content/70 leading-relaxed">
+              Pagamento seguro via Stripe. Receba instantaneamente o checklist completo, o bônus Quarto Caverna e suporte humano pelos primeiros 7 dias para aplicar tudo sem dúvidas.
+            </p>
+          </div>
+
+          <Card class="bg-white border border-base-200 shadow-xl">
+            <div class="card-body space-y-6">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h2 class="text-2xl font-semibold text-base-content">
+                    Checklist Método Lux
+                  </h2>
+                  <p class="text-base-content/60 mt-2">
+                    Plano guiado para dormir profundamente em até 7 noites, sem remédios ou melatonina.
+                  </p>
+                </div>
+                <div class="text-right">
+                  <p class="text-base-content/50 text-sm uppercase tracking-wide">
+                    Hoje
+                  </p>
+                  <p class="text-3xl font-bold text-primary">
+                    R$67
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-base-200/60 rounded-2xl p-6 space-y-5">
+                <div class="space-y-3">
+                  <div class="flex items-start gap-3">
+                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <Icon name="check-circle" size="sm" class="text-primary" />
+                    </span>
+                    <div class="text-base-content/80">
+                      <p class="font-medium">Checklist Durma Natural (acesso vitalício)</p>
+                      <p class="text-sm text-base-content/60">
+                        Protocolos baseados em cronobiologia para reorganizar seu sono noite após noite.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondary/10 text-secondary">
+                      <Icon name="users" size="sm" class="text-secondary" />
+                    </span>
+                    <div class="text-base-content/80">
+                      <p class="font-medium">Suporte humano por 7 dias</p>
+                      <p class="text-sm text-base-content/60">
+                        Acompanhamento pelo WhatsApp para tirar dúvidas e ajustar sua rotina.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-accent">
+                      <Icon name="document-text" size="sm" class="text-accent" />
+                    </span>
+                    <div class="text-base-content/80">
+                      <p class="font-medium">Bônus Quarto Caverna</p>
+                      <p class="text-sm text-base-content/60">
+                        Checklist para transformar seu quarto em um ambiente ideal para dormir rápido.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-dashed border-accent/40 bg-accent/5 p-6 space-y-4">
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white">
+                    <Icon name="shield-check" size="md" class="text-white" />
+                  </span>
+                  <div>
+                    <h3 class="text-lg font-semibold text-base-content">
+                      Garantia incondicional de 7 dias
+                    </h3>
+                    <p class="text-sm text-base-content/60">
+                      Caso não sinta melhora no sono, basta enviar uma mensagem dentro do prazo e devolvemos 100% do valor.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <button
+                  type="button"
+                  class="btn bg-primary hover:bg-primary-600 text-white btn-lg w-full shadow-lg hover:shadow-xl transition-all duration-200"
+                  data-checkout-button
+                >
+                  Pagar com segurança via Stripe
+                </button>
+                <p class="text-center text-xs text-base-content/50">
+                  Cartões de crédito, Pix ou boleto disponíveis conforme opções do Stripe.
+                </p>
+              </div>
+
+              <div class="rounded-xl bg-base-200/50 p-4 text-sm text-base-content/70 space-y-2">
+                <p>
+                  <strong class="text-base-content">Pagamento seguro:</strong>
+                  {' '}usamos Stripe, a plataforma global certificada PCI DSS, para processar seu pagamento com criptografia de ponta a ponta.
+                </p>
+                <p>
+                  Você receberá o acesso imediato por e-mail logo após a confirmação do pagamento.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <div class="rounded-2xl border border-base-200 bg-white/60 p-6">
+            <h2 class="text-xl font-semibold text-base-content mb-3">
+              Precisa de ajuda?
+            </h2>
+            <p class="text-base-content/70 text-sm leading-relaxed">
+              Fale com nossa equipe no WhatsApp (<a href="https://wa.me/5511999999999" class="text-primary hover:text-primary-600 underline">+55 11 99999-9999</a>)
+              antes de finalizar. Estamos online em horário comercial para responder em poucos minutos.
+            </p>
+          </div>
+        </div>
+
+        <aside class="space-y-6">
+          <Card class="bg-white border border-base-200 shadow-lg">
+            <div class="card-body space-y-4">
+              <div>
+                <h3 class="text-lg font-semibold text-base-content">
+                  Recapitulando o que você leva hoje
+                </h3>
+                <p class="text-sm text-base-content/60">
+                  Um pacote completo para dormir naturalmente, com apoio humano e garantia total.
+                </p>
+              </div>
+              <ul class="space-y-3 text-sm text-base-content/70">
+                <li class="flex items-start gap-2">
+                  <Icon name="check-circle" size="sm" class="mt-1 text-primary" />
+                  Checklist Durma Natural com protocolos passo a passo
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icon name="check-circle" size="sm" class="mt-1 text-primary" />
+                  Bônus Quarto Caverna para acertar seu ambiente de sono
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icon name="check-circle" size="sm" class="mt-1 text-primary" />
+                  Suporte humano por 7 dias para ajustes e motivação
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icon name="check-circle" size="sm" class="mt-1 text-primary" />
+                  Garantia incondicional de 7 dias — risco zero
+                </li>
+              </ul>
+            </div>
+          </Card>
+
+          <Card class="bg-white border border-primary/30 shadow-md">
+            <div class="card-body space-y-3">
+              <div class="flex items-center gap-3 text-primary">
+                <Icon name="shield-check" size="md" />
+                <p class="font-semibold">
+                  Compra protegida por Stripe
+                </p>
+              </div>
+              <p class="text-sm text-base-content/60">
+                Seus dados de pagamento nunca passam pelos nossos servidores. Toda a transação acontece diretamente nos sistemas do Stripe com criptografia avançada.
+              </p>
+            </div>
+          </Card>
+
+          <div
+            class="hidden rounded-xl border border-error/20 bg-error/5 p-4 text-sm text-error"
+            role="alert"
+            data-checkout-error
+          ></div>
+
+          <div
+            class="rounded-xl border border-base-200 bg-white/80 p-4 text-sm text-base-content/60 space-y-2"
+            data-checkout-status
+          >
+            <p class="font-medium text-base-content">
+              Tenha em mãos:
+            </p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>O e-mail usado no quiz para receber o acesso.</li>
+              <li>Cartão de crédito, Pix ou dados para boleto.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<script type="module">
+  import { telemetry, setSessionId } from '../../lib/telemetry/client';
+  import { getStoredVariant } from '../../lib/abFlags';
+
+  const STORAGE_KEY = 'dormir_quiz_state';
+  const checkoutButton = document.querySelector('[data-checkout-button]');
+  const statusBox = document.querySelector('[data-checkout-status]');
+  const errorBox = document.querySelector('[data-checkout-error]');
+
+  let sessionId = null;
+  let variant = getStoredVariant() ?? 'A';
+  let pageStart = Date.now();
+
+  function readSessionId() {
+    const params = new URLSearchParams(window.location.search);
+    const fromParam = params.get('session') || params.get('sessionId') || params.get('sid');
+    if (fromParam && /^[0-9a-fA-F-]{36}$/.test(fromParam)) {
+      return fromParam;
+    }
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return null;
+      const parsed = JSON.parse(stored);
+      if (parsed?.sessionId && typeof parsed.sessionId === 'string') {
+        return parsed.sessionId;
+      }
+    } catch (error) {
+      console.debug('Failed to parse stored session:', error);
+    }
+
+    return null;
+  }
+
+  function setStatus(message, options = {}) {
+    if (!statusBox) return;
+    statusBox.classList.remove('hidden');
+    statusBox.textContent = message;
+    if (options.intent === 'error') {
+      statusBox.classList.add('border-error/40', 'text-error');
+    } else {
+      statusBox.classList.remove('border-error/40', 'text-error');
+    }
+  }
+
+  function showError(message) {
+    if (!errorBox) return;
+    errorBox.classList.remove('hidden');
+    errorBox.textContent = message;
+  }
+
+  function clearError() {
+    if (!errorBox) return;
+    errorBox.classList.add('hidden');
+    errorBox.textContent = '';
+  }
+
+  function toggleButton(disabled, label) {
+    if (!checkoutButton) return;
+    checkoutButton.disabled = disabled;
+    checkoutButton.classList.toggle('opacity-60', disabled);
+    if (label) {
+      checkoutButton.textContent = label;
+    }
+  }
+
+  function init() {
+    sessionId = readSessionId();
+    if (!sessionId) {
+      toggleButton(true, 'Complete o quiz para continuar');
+      setStatus('Precisamos do seu progresso no quiz para prosseguir com o checkout. Conclua o diagnóstico para gerar seu acesso.', { intent: 'error' });
+      showError('Sessão inválida. Volte ao quiz, complete as etapas e tente novamente.');
+      return;
+    }
+
+    setSessionId(sessionId);
+    telemetry.pageView(sessionId, 'checkout', variant);
+    setStatus('Revise seu pedido e finalize o pagamento com segurança.');
+    clearError();
+    toggleButton(false);
+  }
+
+  async function startCheckout() {
+    if (!sessionId) {
+      showError('Sessão não encontrada. Recarregue a página ou refaça o quiz.');
+      return;
+    }
+
+    clearError();
+    toggleButton(true, 'Redirecionando para Stripe...');
+    setStatus('Gerando link seguro de pagamento...', { intent: 'info' });
+    telemetry.checkoutInitiated(sessionId, variant, 6700);
+
+    try {
+      const response = await fetch('/api/checkout/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, variant })
+      });
+
+      if (!response.ok) {
+        telemetry.apiError(sessionId, '/api/checkout/create', response.status);
+        const detail = await response.json().catch(() => ({}));
+        throw new Error(detail?.error || 'Não foi possível iniciar o checkout. Tente novamente.');
+      }
+
+      const data = await response.json();
+      if (!data?.url) {
+        throw new Error('Resposta inválida do servidor. Atualize a página e tente novamente.');
+      }
+
+      telemetry.checkoutRedirect(sessionId, 'stripe_checkout', variant);
+      window.location.href = data.url;
+    } catch (error) {
+      console.error('Checkout error:', error);
+      telemetry.clientError(sessionId, 'checkout_start_failed', error?.message);
+      showError(error?.message || 'Erro inesperado ao iniciar o pagamento.');
+      toggleButton(false, 'Tentar novamente com Stripe');
+      setStatus('Revise seus dados e tente novamente. Se o problema persistir, fale com nossa equipe.', { intent: 'error' });
+    }
+  }
+
+  checkoutButton?.addEventListener('click', (event) => {
+    event.preventDefault();
+    startCheckout();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden' && sessionId) {
+      telemetry.pageExit(sessionId, 'checkout', Date.now() - pageStart);
+    }
+  });
+
+  window.addEventListener('beforeunload', () => {
+    if (sessionId) {
+      telemetry.pageExit(sessionId, 'checkout', Date.now() - pageStart);
+    }
+  });
+
+  init();
+</script>
