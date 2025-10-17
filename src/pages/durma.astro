@@ -18,7 +18,7 @@ import AnimatedLogo from '../components/AnimatedLogo.astro';
 import StickyCTA from '../components/StickyCTA.tsx';
 import CookieConsent from '../components/CookieConsent.tsx';
 import { COPY } from '../lib/abFlags';
-import { primaryBrandLogo } from '../lib/images';
+import { brandLogos, primaryBrandLogo } from '../lib/images';
 
 // Default to variant A for server-side rendering
 // Client-side variant will be determined dynamically
@@ -31,6 +31,7 @@ const description = 'Checklist digital baseado em cronobiologia para dormir em a
 
 // Schema.org structured data
 const logoUrl = Astro.site ? new URL(primaryBrandLogo.src, Astro.site).href : primaryBrandLogo.src;
+const ogImagePath = brandLogos.whiteBackground.png512;
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -110,6 +111,7 @@ const schema = {
 <BaseLayout
   title={title}
   description={description}
+  ogImage={ogImagePath}
   schema={schema}
 >
   <!-- Hero Section -->
